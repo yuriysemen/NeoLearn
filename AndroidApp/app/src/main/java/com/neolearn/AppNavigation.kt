@@ -19,7 +19,7 @@ fun AppNavigation() {
         }
         composable("second") {
             SecondScreen(
-                onBack = { navController.popBackStack() }
+//                onBack = { navController.popBackStack() }
             )
         }
     }

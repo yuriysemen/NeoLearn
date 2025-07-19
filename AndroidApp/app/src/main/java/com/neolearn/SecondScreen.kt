@@ -1,35 +1,40 @@
 package com.neolearn
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SecondScreen(onBack: () -> Unit) {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Другий екран") }
-            )
-        }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(24.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Це другий екран!", style = MaterialTheme.typography.titleLarge)
-            Spacer(modifier = Modifier.height(32.dp))
-            OutlinedButton(onClick = onBack) {
-                Text("Назад")
+fun SecondScreen() {
+
+    fun buildMaterial(context: Context, sourceFileName: String): String {
+        val header = context.assets.open("header.html").bufferedReader().use { it.readText() }
+        val body = context.assets.open("materials/$sourceFileName").bufferedReader().use { it.readText() }
+        val footer = context.assets.open("footer.html").bufferedReader().use { it.readText() }
+
+        return header + body + footer
+    }
+
+//    val sourceFile = "matem 6/010 Aryphmetyka/010 Naturalni chysla/010Learn what is that.html"
+    val sourceFile = "matem 6/010 Aryphmetyka/010 Naturalni chysla/010CheckLearn001 what is that.html"
+    val fullHtml = buildMaterial(LocalContext.current, sourceFile)
+
+    AndroidView(
+        modifier = Modifier.fillMaxSize(),
+        factory = { context ->
+            WebView(context).apply {
+                settings.javaScriptEnabled = true
+                settings.domStorageEnabled = true
+                settings.allowFileAccess = true
+                settings.allowContentAccess = true
+                webViewClient = WebViewClient()
+                loadDataWithBaseURL(null, fullHtml, "text/html", "utf-8", null)
             }
         }
-    }
+    )
 }
