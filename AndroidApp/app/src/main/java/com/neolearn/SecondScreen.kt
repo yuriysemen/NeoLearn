@@ -20,7 +20,7 @@ fun SecondScreen() {
         return header + body + footer
     }
 
-//    val sourceFile = "matem 6/010 Aryphmetyka/010 Naturalni chysla/010Learn what is that.html"
+//    val sourceFile = "matem 6/010 Aryphmetyka/010 Naturalni chysla/010_Explanation what is that.html"
     val sourceFile = "matem 6/010 Aryphmetyka/010 Naturalni chysla/010CheckLearn001 what is that.html"
     val fullHtml = buildMaterial(LocalContext.current, sourceFile)
 

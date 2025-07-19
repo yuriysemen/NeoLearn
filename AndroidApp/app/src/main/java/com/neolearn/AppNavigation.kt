@@ -14,7 +14,7 @@ fun AppNavigation() {
     NavHost(navController = navController, startDestination = "welcome") {
         composable("welcome") {
             WelcomeScreen(
-                onNavigate = { navController.navigate("second") }
+                onStartClicked = { navController.navigate("second") }
             )
         }
         composable("second") {

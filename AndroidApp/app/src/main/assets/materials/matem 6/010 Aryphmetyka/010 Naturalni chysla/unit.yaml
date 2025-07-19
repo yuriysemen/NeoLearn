@@ -1,0 +1,17 @@
+unit:
+  id: matem 6.010 Aryphmetyka.010 Naturalni chysla
+  title: "Натуральні числа і дії з ними"
+  grade: 6
+  description: "Цей юніт знайомить учня з натуральними числами, додаванням і відніманням."
+
+  materials:
+    - fileType: "html"
+      materialType: material
+      title: "Що таке натуральні числа?"
+      path: 010_Explanation what is that.html
+
+    - fileType: "html"
+      materialType: practice_tasks
+      title: "🧪 Перевір себе: Що таке натуральні числа?"
+      subTitle: "Вибери правильні відповіді або напиши свою."
+      path: 010CheckLearn{variant}{number} what is that.html

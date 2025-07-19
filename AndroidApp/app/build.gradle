@@ -54,6 +54,12 @@ dependencies {
 
     implementation libs.navigation.compose
 
+    // Parsing yaml formats
+    implementation libs.snakeyaml
+
+    // icons
+    implementation(libs.androidx.material.icons.extended)
+
     // Default
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx

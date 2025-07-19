@@ -1,0 +1,44 @@
+id: lesson-010
+title: "🔢 Що таке натуральні числа?"
+description: "На цьому уроці учні навчаться виконувати додавання натуральних чисел з переходом через розряд."
+
+content_file: "010_Explanation what is that.html"
+duration: 15  # хвилин
+
+#objectives:
+#  - Засвоїти правила додавання натуральних чисел
+#  - Вміти виконувати додавання у стовпчик
+#  - Розв’язувати задачі з переходом через розряд
+
+#prerequisites:
+#  - lesson-000  # Наприклад: Вступ до арифметики
+#
+#resources:
+#  links:
+#    - title: "Вікіпедія: Додавання"
+#      url: "https://uk.wikipedia.org/wiki/Додавання"
+#
+#activities:
+#  - type: explanation
+#    title: "Теорія"
+#    html_id: "section-theory"
+#  - type: example
+#    title: "Приклади"
+#    html_id: "section-examples"
+#  - type: exercise
+#    title: "Вправи для учнів"
+#    html_id: "section-exercises"
+#  - type: quiz
+#    title: "Самоперевірка"
+#    html_id: "section-quiz"
+#
+#assessment:
+#  type: self-check
+#  questions: 5
+#  passing_score: 4
+#
+#tracking:
+#  scorm_id: "sco-lesson-001"
+#  completion_criteria:
+#    - viewed_all_sections
+#    - score >= 80
