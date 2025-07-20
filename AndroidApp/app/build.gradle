@@ -56,9 +56,11 @@ dependencies {
 
     // Parsing yaml formats
     implementation libs.snakeyaml
+    implementation libs.jackson.dataformat.yaml
+    implementation libs.jackson.module.kotlin
 
     // icons
-    implementation(libs.androidx.material.icons.extended)
+    implementation libs.androidx.material.icons.extended
 
     // Default
     implementation libs.androidx.core.ktx
