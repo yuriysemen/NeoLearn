@@ -1,16 +1,18 @@
 import android.content.Context
+import android.util.Log
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.neolearn.course.Course
 import com.neolearn.course.Module
 import com.neolearn.course.CourseUnit
+import com.neolearn.course.Lesson
 
 object CourseLoader {
     private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
 
     fun loadCourse(context: Context, courseFilePath: String): Course {
-        val input = context.assets.open("$courseFilePath/course.yaml")
+        val input = context.assets.open("materials/$courseFilePath/course.yaml")
         val result = mapper.readValue(input, Course::class.java)
         result.locatedAt = "$courseFilePath/course.yaml"
         return result
@@ -18,20 +20,21 @@ object CourseLoader {
 
     fun loadModules(context: Context, modulesPath: String): List<Module> {
         val assetManager = context.assets
-        val filesList = assetManager.list(modulesPath) ?: return emptyList()
+        val filesList = assetManager.list("materials/$modulesPath") ?: return emptyList()
 
         val modules = filesList
             .filter { folder ->
-                val fullPath = "$modulesPath/$folder/module.yaml"
+                val fullPath = "materials/$modulesPath/$folder/module.yaml"
                 try {
                     assetManager.open(fullPath).close() // Try to open and close the file
                     true // File exists
                 } catch (e: Exception) {
+                    Log.d(this::class.java.simpleName, "Error opening module.yaml file at folder: $folder")
                     false // File not found
                 }
             }
             .mapNotNull { folder ->
-                assetManager.open("$modulesPath/$folder/module.yaml").use { input ->
+                assetManager.open("materials/$modulesPath/$folder/module.yaml").use { input ->
                     val output = mapper.readValue(input, Module::class.java)
                     output.locatedAt = "$modulesPath/$folder"
                     output
@@ -41,13 +44,23 @@ object CourseLoader {
         return modules
     }
 
-    fun loadUnits(context: Context, unitsPath: String): List<CourseUnit> {
+    fun loadModule(context: Context, coursePath: String, modulePath: String): Module {
         val assetManager = context.assets
-        val filesList = assetManager.list(unitsPath) ?: return emptyList()
+
+        return assetManager.open("materials/$coursePath/$modulePath/module.yaml").use { input ->
+            val output = mapper.readValue(input, Module::class.java)
+            output.locatedAt = "$coursePath/$modulePath"
+            output
+        }
+    }
+
+    fun loadUnits(context: Context, coursePath: String, unitsPath: String): List<CourseUnit> {
+        val assetManager = context.assets
+        val filesList = assetManager.list("materials/$coursePath/$unitsPath") ?: return emptyList()
 
         return filesList
             .filter { folder ->
-                val fullPath = "$unitsPath/$folder/unit.yaml"
+                val fullPath = "materials/$coursePath/$unitsPath/$folder/unit.yaml"
                 try {
                     assetManager.open(fullPath).close() // Try to open and close the file
                     true // File exists
@@ -56,15 +69,40 @@ object CourseLoader {
                 }
             }
             .mapNotNull { folder ->
-                assetManager.open("$unitsPath/$folder/unit.yaml").use { input ->
+                assetManager.open("materials/$coursePath/$unitsPath/$folder/unit.yaml").use { input ->
                     mapper.readValue(input, CourseUnit::class.java)
                 }
         }
     }
-//    fun loadLessons(context: Context, unit: Unit): List<Lesson> {
-//        return unit.lessons.map { lessonFile ->
-//            val stream = context.assets.open("lessons/$lessonFile")
-//            mapper.readValue(stream, Lesson::class.java)
-//        }
-//    }
+
+    fun loadUnit(context: Context, coursePath: String, modulePath: String, unitPath: String): CourseUnit {
+        val assetManager = context.assets
+
+        return assetManager.open("materials/$coursePath/$modulePath/$unitPath/unit.yaml").use { input ->
+            val output = mapper.readValue(input, CourseUnit::class.java)
+            output.locatedAt = "$coursePath/$modulePath/$unitPath"
+            output
+        }
+    }
+
+    fun loadLessons(context: Context, coursePath: String, modulePath: String, unit: String): List<Lesson> {
+        val assetManager = context.assets
+        val filesList = assetManager.list("materials/$coursePath/$modulePath/$unit") ?: return emptyList()
+
+        return filesList
+            .filter { folder ->
+                val fullPath = "materials/$coursePath/$modulePath/$unit/$folder/lesson.yaml"
+                try {
+                    assetManager.open(fullPath).close() // Try to open and close the file
+                    true // File exists
+                } catch (e: Exception) {
+                    false // File not found
+                }
+            }
+            .mapNotNull { folder ->
+                assetManager.open("materials/$coursePath/$modulePath/$unit/$folder/lesson.yaml").use { input ->
+                    mapper.readValue(input, Lesson::class.java)
+                }
+            }
+    }
 }

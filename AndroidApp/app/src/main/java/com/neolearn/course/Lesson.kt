@@ -5,4 +5,6 @@ data class Lesson(
     val title: String,
     val description: String,
     val contentFile: String,
+
+    var locatedAt: String?,
 )
