@@ -2,12 +2,12 @@ id: 010 What is that
 title: "🔢 Що таке натуральні числа?"
 description: "На цьому уроці учні навчаться виконувати додавання натуральних чисел з переходом через розряд."
 
-#materials:
-#  - fileType: "html"
-#    materialType: material
-#    title: "🧪 Що таке натуральні числа?"
-#    path: 010_Explanation what is that.html
-#
+materials:
+  - fileType: "html"
+    materialType: material
+    title: "🧪 Що таке натуральні числа?"
+    path: 010_Explanation what is that.html
+
 #  - fileType: "html"
 #    materialType: practice_tasks
 #    title: "🧪 Перевір себе: Що таке натуральні числа?"

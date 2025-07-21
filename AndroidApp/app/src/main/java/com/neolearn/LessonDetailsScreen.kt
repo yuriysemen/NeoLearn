@@ -108,6 +108,18 @@ fun LessonDetailsScreen(
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
+
+                Button(
+                    onClick = {
+                        // TODO: перехід до LessonContentScreen
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text(text = "Почати урок")
+                }
             }
         }
     }
