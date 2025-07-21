@@ -80,5 +80,31 @@ fun AppNavigation() {
                 )
             }
         }
+        composable(
+            route = "unitDetailsScreen/{courseId}/{moduleId}/{unitId}",
+            arguments = listOf(
+                navArgument("courseId") { type = NavType.StringType },
+                navArgument("moduleId") { type = NavType.StringType },
+                navArgument("unitId") { type = NavType.StringType },
+                navArgument("lessonId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val courseId = backStackEntry.arguments?.getString("courseId")
+            val moduleId = backStackEntry.arguments?.getString("moduleId")
+            val unitId = backStackEntry.arguments?.getString("unitId")
+            val lessonId = backStackEntry.arguments?.getString("lessonId")
+
+            if ((courseId != null) and (moduleId != null) and (unitId != null) and (lessonId != null)) {
+                LessonDetailsScreen(
+                    courseId!!,
+                    moduleId!!,
+                    unitId!!,
+                    onUnitClick = {
+                            course: Course, module: Module, unit: CourseUnit, lesson: Lesson ->
+                        navController.navigate("lessonDetailsScreen/${course.id}/${module.id}/${unit.id}/${lesson.id}")
+                    }
+                )
+            }
+        }
     }
 }

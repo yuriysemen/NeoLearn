@@ -105,4 +105,21 @@ object CourseLoader {
                 }
             }
     }
+
+    fun loadLesson(
+        context: Context,
+        coursePath: String,
+        modulePath: String,
+        unitPath: String,
+        lessonPath: String
+    ): Lesson {
+        val assetManager = context.assets
+
+        return assetManager.open("materials/$coursePath/$modulePath/$unitPath/$lessonPath/lesson.yaml").use { input ->
+            val output = mapper.readValue(input, Lesson::class.java)
+            output.locatedAt = "$coursePath/$modulePath/$unitPath/$lessonPath"
+            output
+        }
+    }
+
 }
