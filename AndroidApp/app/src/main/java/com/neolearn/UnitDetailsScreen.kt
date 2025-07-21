@@ -1,6 +1,7 @@
 package com.neolearn
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -49,6 +50,7 @@ fun UnitDetailsScreen(
             lessons = CourseLoader.loadLessons(context, coursePath, modulePath, unitPath)
             dataLoaded = true
         } catch (e: Exception) {
+            Log.e(this.javaClass.name, "Course structure does have an error", e)
             loadingCourceError = true
         }
     }

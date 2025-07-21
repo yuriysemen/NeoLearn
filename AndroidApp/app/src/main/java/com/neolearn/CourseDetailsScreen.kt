@@ -1,6 +1,7 @@
 package com.neolearn
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,6 +43,7 @@ fun CourseDetailsScreen(
             modules = CourseLoader.loadModules(context, coursePath)
             dataLoaded = true
         } catch (e: Exception) {
+            Log.e(this.javaClass.name, "Course structure does have an error", e)
             loadingCourceError = true
         }
     }

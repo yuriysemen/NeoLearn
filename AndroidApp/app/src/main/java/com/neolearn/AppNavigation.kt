@@ -1,8 +1,6 @@
 package com.neolearn
 
-import CourseLoader
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -81,7 +79,7 @@ fun AppNavigation() {
             }
         }
         composable(
-            route = "unitDetailsScreen/{courseId}/{moduleId}/{unitId}",
+            route = "lessonDetailsScreen/{courseId}/{moduleId}/{unitId}/{lessonId}",
             arguments = listOf(
                 navArgument("courseId") { type = NavType.StringType },
                 navArgument("moduleId") { type = NavType.StringType },
@@ -99,10 +97,7 @@ fun AppNavigation() {
                     courseId!!,
                     moduleId!!,
                     unitId!!,
-                    onUnitClick = {
-                            course: Course, module: Module, unit: CourseUnit, lesson: Lesson ->
-                        navController.navigate("lessonDetailsScreen/${course.id}/${module.id}/${unit.id}/${lesson.id}")
-                    }
+                    lessonId!!
                 )
             }
         }

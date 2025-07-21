@@ -1,10 +1,9 @@
 package com.neolearn
 
 import android.content.Context
-import androidx.compose.foundation.clickable
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -50,6 +49,7 @@ fun LessonDetailsScreen(
             lesson = CourseLoader.loadLesson(context, coursePath, modulePath, unitPath, lessonPath)
             dataLoaded = true
         } catch (e: Exception) {
+            Log.e(this.javaClass.name, "Course structure does have an error", e)
             loadingCourceError = true
         }
     }
@@ -89,7 +89,7 @@ fun LessonDetailsScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
             ) {
-                unit?.let {
+                lesson?.let {
                     Text(
                         text = module!!.title,
                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
@@ -107,36 +107,6 @@ fun LessonDetailsScreen(
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
-
-                    Text(
-                        text = "Уроки:",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    lessons.forEach { lesson ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 6.dp)
-                                .clickable { onUnitClick(course!!, module!!, unit!!, lesson) },
-                            shape = RoundedCornerShape(8.dp),
-                            elevation = CardDefaults.cardElevation(2.dp)
-                        ) {
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                Text(
-                                    text = lesson.title,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = lesson.description,
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            }
-                        }
-                    }
                 }
             }
         }
