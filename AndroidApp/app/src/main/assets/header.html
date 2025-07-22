@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../katex/katex.min.css">
-    <link rel="stylesheet" href="main.css">
     <script defer src="../katex/katex.min.js"></script>
     <script>
         window.onload = () => {
@@ -13,10 +13,62 @@
         };
     </script>
     <style>
-        body { font-size: 18px; padding: 16px; }
+  body {
+    font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+    background-color: {{background}};
+    padding: 24px;
+    color: {{text}};
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 1.8em;
+    margin-bottom: 0.6em;
+  }
+
+  h2 {
+    font-size: 1.3em;
+    margin-top: 1.4em;
+  }
+
+  p, ul {
+    font-size: 1.05em;
+  }
+
+  ul {
+    padding-left: 1.2em;
+  }
+
+  .math-inline {
+    font-weight: 600;
+    color: {{math}};
+  }
+
+  .info-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background-color: {{infoBackground}};
+    padding: 12px 14px;
+    border-left: 4px solid {{infoBorder}};
+    margin: 12px 0;
+    border-radius: 6px;
+    font-size: 1em;
+    line-height: 1.5;
+  }
+
+  .info-block .icon {
+    font-size: 1.3em;
+    margin-top: 2px;
+  }
+
+  .info-block.info      { border-left-color: {{info}}; }
+  .info-block.warning   { border-left-color: {{warning}}; }
+  .info-block.task      { border-left-color: {{task}}; }
+  .info-block.question  { border-left-color: {{question}}; }
+  .info-block.reference { border-left-color: {{reference}} }
+  .info-block.hint      { border-left-color: {{hint}}; }
+  .info-block.term      { border-left-color: {{term}}; }
     </style>
 </head>
 <body>
-<main style="font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; line-height: 1.6;">
-
-    <section style="background-color: #e3f2fd; border-radius: 12px; padding: 16px;">

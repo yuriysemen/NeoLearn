@@ -1,7 +1,7 @@
 package com.neolearn.course
 
 
-data class Activities(
+data class LessonActivity(
     val fileType: String,
     val activityType: String,
     val comment: String?,
@@ -15,7 +15,7 @@ data class Lesson(
     val title: String,
     val description: String?,
     val objectives: List<String>,
-    val activities: List<Activities>,
+    val activities: List<LessonActivity>,
 
     var locatedAt: String?,
 )

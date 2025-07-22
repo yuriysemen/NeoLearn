@@ -10,8 +10,7 @@ objectives:
 activities:
   - fileType: "html"
     activityType: intro
-    comment: "Підготовка до уроку"
-    path: 010 Preparation.html
+    path: 010 Intro.html
 
   - fileType: "html"
     activityType: material

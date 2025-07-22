@@ -1,5 +1,7 @@
 package com.neolearn
 
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -21,6 +23,21 @@ import com.neolearn.course.Course
 import com.neolearn.course.Module
 import com.neolearn.course.CourseUnit
 import com.neolearn.course.Lesson
+import com.neolearn.course.LessonActivity
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.graphics.Color
+
+
+private fun readAsset(context: Context, path: String): String {
+    return context.assets.open(path).bufferedReader().use { it.readText() }
+}
+
+fun Color.toHex(): String {
+    return String.format("#%02X%02X%02X",
+        (red * 255).toInt(),
+        (green * 255).toInt(),
+        (blue * 255).toInt())
+}
 
 
 @Composable
@@ -37,6 +54,7 @@ fun LessonDetailsScreen(
     var module by remember { mutableStateOf<Module?>(null) }
     var unit by remember { mutableStateOf<CourseUnit?>(null) }
     var lesson by remember { mutableStateOf<Lesson?>(null) }
+    var activity by remember { mutableStateOf<LessonActivity?>(null) }
 
     var dataLoaded by remember { mutableStateOf(false) }
     var loadingCourceError by remember { mutableStateOf(false) }
@@ -47,6 +65,9 @@ fun LessonDetailsScreen(
             module = CourseLoader.loadModule(context, coursePath, modulePath)
             unit = CourseLoader.loadUnit(context, coursePath, modulePath, unitPath)
             lesson = CourseLoader.loadLesson(context, coursePath, modulePath, unitPath, lessonPath)
+
+            activity = lesson!!.activities.firstOrNull()
+
             dataLoaded = true
         } catch (e: Exception) {
             Log.e(this.javaClass.name, "Course structure does have an error", e)
@@ -89,31 +110,64 @@ fun LessonDetailsScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
             ) {
-                lesson!!.let {
-                    Text(
-                        text = module!!.title,
-                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
+                Text(
+                    text = module!!.title + " :: " + lesson!!.title,
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
 
-                    Text(
-                        text = it.title,
-                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(bottom = 24.dp)
-                    )
+                if (activity != null) {
+                    val header = readAsset(context, "header.html")
+                    val footer = readAsset(context, "footer.html")
+                    val body = readAsset(context, "materials/${lesson!!.locatedAt}/${activity!!.path}")
 
-                    if (it.description != null) {
-                        Text(
-                            text = it.description,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
-                            modifier = Modifier.padding(bottom = 8.dp)
+                    val header2 = header.replace("{{background}}", MaterialTheme.colorScheme.primaryContainer.toHex())
+                        .replace("{{text}}", MaterialTheme.colorScheme.onPrimaryContainer.toHex())
+                        .replace("{{math}}", "#fff176")
+                        .replace("{{infoBackground}}", "rgba(255,255,255,0.1)")
+                        .replace("{{infoBorder}}", "#fff")
+                        .replace("{{info}}", "#03a9f4")
+                        .replace("{{warning}}", "#ff9800")
+                        .replace("{{task}}", "#4caf50")
+                        .replace("{{question}}", "#9575cd")
+                        .replace("{{reference}}", "#26c6da")
+                        .replace("{{hint}}", "#aed581")
+                        .replace("{{term}}", "#f06292")
+
+                    val fullHtml =  header2 + body + footer
+                    val baseUrl = context.cacheDir.toURI().toString()
+                    Box(modifier = Modifier.weight(1f)) {
+                        AndroidView(
+                            factory = { context ->
+                                WebView(context).apply {
+                                    settings.javaScriptEnabled = true
+                                    settings.domStorageEnabled = true
+                                    webViewClient = WebViewClient()
+                                    loadDataWithBaseURL(
+                                        baseUrl,                  // щоб WebView знайшов style.css
+                                        fullHtml,                 // HTML контент
+                                        "text/html",    // mime type
+                                        "utf-8",         // encoding
+                                        null             // history url
+                                    )
+                                }
+                            },
+                            update = { webView ->
+                                webView.loadDataWithBaseURL(
+                                    baseUrl,
+                                    fullHtml,
+                                    "text/html",
+                                    "utf-8",
+                                    null)
+                            },
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
 
                 Button(
                     onClick = {
-                        // TODO: перехід до LessonContentScreen
+                        activity = lesson!!.activities[1]
                     },
                     modifier = Modifier
                         .fillMaxWidth()

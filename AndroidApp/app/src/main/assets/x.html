@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../katex/katex.min.css">
+    <script defer src="../katex/katex.min.js"></script>
+    <script>
+        window.onload = () => {
+          document.querySelectorAll('.math').forEach(el => {
+            katex.render(el.textContent, el);
+          });
+        };
+    </script>
+    <style>
+        body {
+          font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+          background-color: #FEF7FF;
+          padding: 24px;
+          color: #1D1B20;
+          line-height: 1.6;
+        }
+
+        h1 {
+          font-size: 1.8em;
+          margin-bottom: 0.6em;
+        }
+
+        h2 {
+          font-size: 1.3em;
+          margin-top: 1.4em;
+        }
+
+        p, ul {
+          font-size: 1.05em;
+        }
+
+        ul {
+          padding-left: 1.2em;
+        }
+
+        .math-inline {
+          font-weight: 600;
+          color: #fff176;
+        }
+
+        .info-block {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          background-color: rgba(255,255,255,0.1);
+          padding: 12px 14px;
+          border-left: 4px solid #fff;
+          margin: 12px 0;
+          border-radius: 6px;
+          font-size: 1em;
+          line-height: 1.5;
+        }
+
+        .info-block .icon {
+          font-size: 1.3em;
+          margin-top: 2px;
+        }
+
+        .info-block.info      { border-left-color: #03a9f4; }
+        .info-block.warning   { border-left-color: #ff9800; }
+        .info-block.task      { border-left-color: #4caf50; }
+        .info-block.question  { border-left-color: #9575cd; }
+        .info-block.reference { border-left-color: #26c6da }
+        .info-block.hint      { border-left-color: #aed581; }
+        .info-block.term      { border-left-color: #f06292; }
+    </style>
+</head>
+<body>
