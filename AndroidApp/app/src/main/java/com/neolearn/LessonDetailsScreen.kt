@@ -26,6 +26,10 @@ import com.neolearn.course.Lesson
 import com.neolearn.course.LessonActivity
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.graphics.Color
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 private fun readAsset(context: Context, path: String): String {
@@ -39,6 +43,17 @@ fun Color.toHex(): String {
         (blue * 255).toInt())
 }
 
+fun copyAssetToCache(context: Context, assetName: String, outputName: String): File {
+    val outputFile = File(context.cacheDir, outputName)
+
+    context.assets.open(assetName).use { input ->
+        FileOutputStream(outputFile).use { output ->
+            input.copyTo(output)
+        }
+    }
+
+    return outputFile
+}
 
 @Composable
 fun LessonDetailsScreen(
@@ -121,9 +136,13 @@ fun LessonDetailsScreen(
                     val footer = readAsset(context, "footer.html")
                     val body = readAsset(context, "materials/${lesson!!.locatedAt}/${activity!!.path}")
 
+                    var css = copyAssetToCache(context, "katex/katex.min.css", "katex.min.css")
+                    var js = copyAssetToCache(context, "katex/katex.min.js", "katex.min.js")
+                    var ar = copyAssetToCache(context, "katex/auto-render.min.js", "auto-render.min.js")
+
                     val header2 = header.replace("{{background}}", MaterialTheme.colorScheme.primaryContainer.toHex())
                         .replace("{{text}}", MaterialTheme.colorScheme.onPrimaryContainer.toHex())
-                        .replace("{{math}}", "#fff176")
+                        .replace("{{math}}", MaterialTheme.colorScheme.secondary.toHex())
                         .replace("{{infoBackground}}", "rgba(255,255,255,0.1)")
                         .replace("{{infoBorder}}", "#fff")
                         .replace("{{info}}", "#03a9f4")
@@ -136,12 +155,21 @@ fun LessonDetailsScreen(
 
                     val fullHtml =  header2 + body + footer
                     val baseUrl = context.cacheDir.toURI().toString()
+
+                    val cacheFiles: Array<File> = context.cacheDir.listFiles() ?: emptyArray()
+
+                    for (file in cacheFiles) {
+                        Log.d("CacheFiles", "File: ${file.name}")
+                    }
+
                     Box(modifier = Modifier.weight(1f)) {
                         AndroidView(
                             factory = { context ->
                                 WebView(context).apply {
                                     settings.javaScriptEnabled = true
                                     settings.domStorageEnabled = true
+                                    settings.allowFileAccess = true
+                                    settings.allowContentAccess = true
                                     webViewClient = WebViewClient()
                                     loadDataWithBaseURL(
                                         baseUrl,                  // щоб WebView знайшов style.css
