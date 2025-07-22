@@ -1,20 +1,21 @@
 package com.neolearn.course
 
 
-data class Material(
+data class Activities(
     val fileType: String,
-    val materialType: String,
-    val title: String,
+    val activityType: String,
+    val comment: String?,
     val path: String,
+    val completionCriteria: List<String>?,
 )
 
 
 data class Lesson(
     val id: String,
     val title: String,
-    val description: String,
-
-    val materials: List<Material>,
+    val description: String?,
+    val objectives: List<String>,
+    val activities: List<Activities>,
 
     var locatedAt: String?,
 )

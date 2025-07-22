@@ -130,11 +130,13 @@ fun UnitDetailsScreen(
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold
                                 )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = lesson.description,
-                                    style = MaterialTheme.typography.bodySmall
-                                )
+                                if (lesson.description != null) {
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = lesson.description,
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                }
                             }
                         }
                     }

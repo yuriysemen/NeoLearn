@@ -89,7 +89,7 @@ fun LessonDetailsScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
             ) {
-                lesson?.let {
+                lesson!!.let {
                     Text(
                         text = module!!.title,
                         style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
@@ -102,11 +102,13 @@ fun LessonDetailsScreen(
                         modifier = Modifier.padding(bottom = 24.dp)
                     )
 
-                    Text(
-                        text = it.description,
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
+                    if (it.description != null) {
+                        Text(
+                            text = it.description,
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                    }
                 }
 
                 Button(
