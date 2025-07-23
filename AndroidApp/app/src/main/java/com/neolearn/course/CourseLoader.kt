@@ -1,12 +1,16 @@
 import android.content.Context
 import android.util.Log
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.neolearn.copyAssetToCache
 import com.neolearn.course.Course
 import com.neolearn.course.Module
 import com.neolearn.course.CourseUnit
 import com.neolearn.course.Lesson
+import com.neolearn.toHex
 
 object CourseLoader {
     private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
@@ -120,6 +124,38 @@ object CourseLoader {
             output.locatedAt = "$coursePath/$modulePath/$unitPath/$lessonPath"
             output
         }
+    }
+
+    private fun readAsset(context: Context, path: String): String {
+        return context.assets.open(path).bufferedReader().use { it.readText() }
+    }
+
+    @Composable
+    fun prepareActivity(context: Context, activityPath: String): Pair<String, String> {
+        val header = readAsset(context, "header.html")
+        val footer = readAsset(context, "footer.html")
+        val body = readAsset(context, activityPath)
+
+        copyAssetToCache(context, "katex/katex.min.css", "katex.min.css")
+        copyAssetToCache(context, "katex/katex.min.js", "katex.min.js")
+        copyAssetToCache(context, "katex/auto-render.min.js", "auto-render.min.js")
+
+        val header2 = header.replace("{{background}}", MaterialTheme.colorScheme.primaryContainer.toHex())
+            .replace("{{text}}", MaterialTheme.colorScheme.onPrimaryContainer.toHex())
+            .replace("{{math}}", MaterialTheme.colorScheme.secondary.toHex())
+            .replace("{{infoBackground}}", "rgba(255,255,255,0.1)")
+            .replace("{{infoBorder}}", "#fff")
+            .replace("{{info}}", "#03a9f4")
+            .replace("{{warning}}", "#ff9800")
+            .replace("{{task}}", "#4caf50")
+            .replace("{{question}}", "#9575cd")
+            .replace("{{reference}}", "#26c6da")
+            .replace("{{hint}}", "#aed581")
+            .replace("{{term}}", "#f06292")
+
+        return Pair(header2 + body + footer, context.cacheDir.toURI().toString())
+//        val fullHtml =  header2 + body + footer
+//        val baseUrl = context.cacheDir.toURI().toString()
     }
 
 }
