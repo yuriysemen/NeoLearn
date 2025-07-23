@@ -1,47 +1,158 @@
-<div class="info-block info">
-    <span class="icon">ℹ️</span>
-    Натуральні числа — це числа, які ми використовуємо для лічби предметів: <b>1, 2, 3, ...</b>
-</div>
+<section id="lecture-section">
+    <div class="info-block info">
+        <span class="icon">ℹ️</span> Натуральні числа — це числа, які ми використовуємо для лічби предметів: <b>1, 2, 3, ...</b>
+    </div>
 
-<p>
-    Ще з дитинства ми звикли рахувати: <i>один, два, три…</i>. Це і є натуральні числа.
-    Вони допомагають нам рахувати предмети, вимірювати відстані, час та багато іншого.
-</p>
+    <p>
+        Ще з дитинства ми звикли рахувати: <i>один, два, три…</i>. Це і є натуральні числа.
+        Вони допомагають нам рахувати предмети, вимірювати відстані, час та багато іншого.
+    </p>
 
-<div class="info-block.term">
-    <span class="icon">📚</span>
-    <b>Натуральні числа</b> — це числа, які використовують для лічби. Множина натуральних чисел позначається як <span class="math-inline">$\mathbb{N}$</span>.
-</div>
+    <div class="info-block.term">
+        <span class="icon">📚</span>
+        <b>Натуральні числа</b> — це числа, які використовують для лічби. Множина натуральних чисел позначається як <span class="math-inline">$\mathbb{N}$</span>.
+    </div>
 
-<h2>Де ми використовуємо натуральні числа?</h2>
+    <h2>Де ми використовуємо натуральні числа?</h2>
 
-<ul>
-    <li>Кількість книг на полиці</li>
-    <li>Скільки учнів у класі</li>
-    <li>Номер сторінки у підручнику</li>
-</ul>
+    <ul>
+        <li>Кількість книг на полиці</li>
+        <li>Скільки учнів у класі</li>
+        <li>Номер сторінки у підручнику</li>
+    </ul>
 
-<div class="info-block.hint">
-    <span class="icon">💡</span>
-    Натуральні числа не бувають від’ємними або дробовими. Наприклад, <span class="math-inline">$-5$</span> або <span class="math-inline">$3.2$</span> — це не натуральні числа.
-</div>
+    <div class="info-block.hint">
+        <span class="icon">💡</span>
+        Натуральні числа не бувають від’ємними або дробовими. Наприклад, <span class="math-inline">$-5$</span> або <span class="math-inline">$3.2$</span> — це не натуральні числа.
+    </div>
 
-<div class="info-block.warning">
-    <span class="icon">⚠️</span>
-    <b>0</b> — у деяких джерелах вважається натуральним числом, у нашому курсі — <b>ні</b>.
-</div>
+    <div class="info-block.warning">
+        <span class="icon">⚠️</span>
+        <b>0</b> — у деяких джерелах вважається натуральним числом, у нашому курсі — <b>ні</b>.
+    </div>
 
-<div class="info-block.task">
-    <span class="icon">✅</span>
-    Порахуй, скільки предметів знаходиться навколо тебе, які можна порахувати натуральними числами.
-</div>
+    <div class="info-block.task">
+        <span class="icon">✅</span>
+        Порахуй, скільки предметів знаходиться навколо тебе, які можна порахувати натуральними числами.
+    </div>
 
-<div class="info-block.question">
-    <span class="icon">❓</span>
-    Яке число є першим натуральним числом? А яке — десятим?
-</div>
+    <div class="info-block.question">
+        <span class="icon">❓</span>
+        Яке число є першим натуральним числом? А яке — десятим?
+    </div>
 
-<div class="info-block.reference">
-    <span class="icon">📘</span>
-    Детальніше про множини чисел можна дізнатись у наступному уроці.
-</div>
+    <div class="info-block.reference">
+        <span class="icon">📘</span>
+        Детальніше про множини чисел можна дізнатись у наступному уроці.
+    </div>
+
+    <button id="go-to-test" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; background-color: #1565c0; color: white; border: none; border-radius: 8px; cursor: pointer;">Перейти до тесту</button>
+</section>
+
+<!-- Тестовий блок -->
+<section id="test-section">
+    <h2 style="color: #2e7d32;">🧪 Тест: Перевір свої знання</h2>
+    <form id="quiz-form" style="margin-top: 10px;">
+
+        <!-- Варіант 1 -->
+        <div class="quiz-variant" id="variant-1" style="display:none;">
+            <ol>
+                <li>Що таке натуральні числа?</li>
+                <label><input type="radio" name="q1" value="A" data-correct="true"> Числа для лічби</label><br>
+                <label><input type="radio" name="q1" value="B"> Від’ємні числа</label><br>
+                <label><input type="radio" name="q1" value="C"> Дробові числа</label><br><br>
+
+                <li>Яке число не є натуральним?</li>
+                <label><input type="radio" name="q2" value="A"> 5</label><br>
+                <label><input type="radio" name="q2" value="B" data-correct="true"> 0</label><br>
+                <label><input type="radio" name="q2" value="C"> 17</label><br>
+            </ol>
+        </div>
+
+        <!-- Варіант 2 -->
+        <div class="quiz-variant" id="variant-2" style="display:none;">
+            <ol>
+                <li>Найменше натуральне число:</li>
+                <label><input type="radio" name="q1" value="A"> 0</label><br>
+                <label><input type="radio" name="q1" value="B" data-correct="true"> 1</label><br>
+                <label><input type="radio" name="q1" value="C"> –1</label><br><br>
+
+                <li>Яке з чисел є натуральним?</li>
+                <label><input type="radio" name="q2" value="A"> –5</label><br>
+                <label><input type="radio" name="q2" value="B"> 0</label><br>
+                <label><input type="radio" name="q2" value="C" data-correct="true"> 12</label><br>
+            </ol>
+        </div>
+
+        <!-- Варіант 3 -->
+        <div class="quiz-variant" id="variant-3" style="display:none;">
+            <ol>
+                <li>Для чого потрібні натуральні числа?</li>
+                <label><input type="radio" name="q1" value="A" data-correct="true"> Щоб рахувати предмети</label><br>
+                <label><input type="radio" name="q1" value="B"> Щоб малювати</label><br>
+                <label><input type="radio" name="q1" value="C"> Щоб писати пісні</label><br><br>
+
+                <li>Познач натуральне число:</li>
+                <label><input type="radio" name="q2" value="A"> –3</label><br>
+                <label><input type="radio" name="q2" value="B" data-correct="true"> 2</label><br>
+                <label><input type="radio" name="q2" value="C"> 0</label><br>
+            </ol>
+        </div>
+
+        <button type="button" id="check-test" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; background-color: #2e7d32; color: white; border: none; border-radius: 8px; cursor: pointer;">Перевірити</button>
+    </form>
+</section>
+<script>
+    const goToTestBtn = document.getElementById('go-to-test');
+    const lectureSection = document.getElementById('lecture-section');
+    const testSection = document.getElementById('test-section');
+    const variants = document.querySelectorAll('.quiz-variant');
+
+    // При натисканні кнопки – показати випадковий варіант тесту
+    goToTestBtn.addEventListener('click', () => {
+      lectureSection.style.display = 'none';
+      testSection.style.display = 'block';
+      const randomIndex = Math.floor(Math.random() * variants.length);
+      variants[randomIndex].style.display = 'block';
+    });
+
+    // Перевірка результатів
+    document.getElementById('check-test').addEventListener('click', () => {
+      let correct = 0;
+      let total = 0;
+      const activeVariant = document.querySelector('.quiz-variant[style*="display: block"]');
+      const inputs = activeVariant.querySelectorAll('input[type="radio"]');
+
+      // Збираємо відповіді
+      const answers = {};
+      inputs.forEach(input => {
+        if (input.checked) {
+          answers[input.name] = input.value;
+        }
+      });
+
+      // Перевірка правильності
+      const groups = new Set(Array.from(inputs).map(i => i.name));
+      groups.forEach(name => {
+        const selected = activeVariant.querySelector(`input[name="${name}"]:checked`);
+        if (selected && selected.dataset.correct === "true") {
+          correct++;
+        }
+        total++;
+      });
+
+      const passed = correct === total;
+      const result = {
+        correct,
+        total,
+        passed
+      };
+
+      // Надсилаємо повідомлення в Android
+      if (window.AndroidBridge) {
+        AndroidBridge.sendMessage(JSON.stringify(result));
+      } else {
+        alert(`Результат: ${correct} з ${total}. Пройдено: ${passed}`);
+      }
+    });
+</script>

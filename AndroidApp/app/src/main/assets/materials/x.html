@@ -1,0 +1,215 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="katex.min.css">
+    <script defer src="katex.min.js"></script>
+    <script defer src="auto-render.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body, {
+            delimiters: [
+              {left: "$$", right: "$$", display: true},
+              {left: "$", right: "$", display: false}
+            ]
+          });
+        });
+    </script>
+    <style>
+        body {
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+  background-color: {{background}};
+  padding: 24px;
+  color: {{text}};
+  line-height: 1.6;
+  -webkit-overflow-scrolling: touch;
+  touch-action: auto;
+  overflow-y: auto;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+html {
+  -webkit-overflow-scrolling: touch;
+  touch-action: auto;
+  overflow-y: auto;
+}
+
+h1 {
+  font-size: 1.8em;
+  margin-bottom: 0.6em;
+}
+
+h2 {
+  font-size: 1.3em;
+  margin-top: 1.4em;
+}
+
+p, ul {
+  font-size: 1.05em;
+}
+
+ul {
+  padding-left: 1.2em;
+}
+
+.math-inline {
+  font-weight: 600;
+  color: {{math}};
+}
+
+.info-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: {{infoBackground}};
+  padding: 12px 14px;
+  border-left: 4px solid {{infoBorder}};
+  margin: 12px 0;
+  border-radius: 6px;
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+.info-block .icon {
+  font-size: 1.3em;
+  margin-top: 2px;
+}
+
+.info-block.info      { border-left-color: {{info}}; }
+.info-block.warning   { border-left-color: {{warning}}; }
+.info-block.task      { border-left-color: {{task}}; }
+.info-block.question  { border-left-color: {{question}}; }
+.info-block.reference { border-left-color: {{reference}} }
+.info-block.hint      { border-left-color: {{hint}}; }
+.info-block.term      { border-left-color: {{term}}; }
+    </style>
+</head>
+<body>
+        <main style="font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; line-height: 1.6;">
+
+            <!-- Лекційний блок -->
+            <section id="lecture-section" style="background-color: #e3f2fd; border-radius: 12px; padding: 16px;">
+                <h1 style="color: #1565c0;">🔢 Що таке натуральні числа?</h1>
+                <p>Натуральні числа — це звичайні числа, якими ми рахуємо предмети: <strong>1, 2, 3, 4, 5...</strong></p>
+                <p>Вони завжди додатні і не містять дробів чи нуля.</p>
+                <h3>📌 Приклади з життя:</h3>
+                <ul>
+                    <li>3 олівці</li>
+                    <li>12 книг</li>
+                    <li>26 учнів у класі</li>
+                </ul>
+                <button id="go-to-test" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; background-color: #1565c0; color: white; border: none; border-radius: 8px; cursor: pointer;">Перейти до тесту</button>
+            </section>
+
+            <!-- Тестовий блок -->
+            <section id="test-section" style="display: none; margin-top: 20px;">
+                <h2 style="color: #2e7d32;">🧪 Тест: Перевір свої знання</h2>
+                <form id="quiz-form" style="margin-top: 10px;">
+
+                    <!-- Варіант 1 -->
+                    <div class="quiz-variant" id="variant-1" style="display:none;">
+                        <ol>
+                            <li>Що таке натуральні числа?</li>
+                            <label><input type="radio" name="q1" value="A" data-correct="true"> Числа для лічби</label><br>
+                            <label><input type="radio" name="q1" value="B"> Від’ємні числа</label><br>
+                            <label><input type="radio" name="q1" value="C"> Дробові числа</label><br><br>
+
+                            <li>Яке число не є натуральним?</li>
+                            <label><input type="radio" name="q2" value="A"> 5</label><br>
+                            <label><input type="radio" name="q2" value="B" data-correct="true"> 0</label><br>
+                            <label><input type="radio" name="q2" value="C"> 17</label><br>
+                        </ol>
+                    </div>
+
+                    <!-- Варіант 2 -->
+                    <div class="quiz-variant" id="variant-2" style="display:none;">
+                        <ol>
+                            <li>Найменше натуральне число:</li>
+                            <label><input type="radio" name="q1" value="A"> 0</label><br>
+                            <label><input type="radio" name="q1" value="B" data-correct="true"> 1</label><br>
+                            <label><input type="radio" name="q1" value="C"> –1</label><br><br>
+
+                            <li>Яке з чисел є натуральним?</li>
+                            <label><input type="radio" name="q2" value="A"> –5</label><br>
+                            <label><input type="radio" name="q2" value="B"> 0</label><br>
+                            <label><input type="radio" name="q2" value="C" data-correct="true"> 12</label><br>
+                        </ol>
+                    </div>
+
+                    <!-- Варіант 3 -->
+                    <div class="quiz-variant" id="variant-3" style="display:none;">
+                        <ol>
+                            <li>Для чого потрібні натуральні числа?</li>
+                            <label><input type="radio" name="q1" value="A" data-correct="true"> Щоб рахувати предмети</label><br>
+                            <label><input type="radio" name="q1" value="B"> Щоб малювати</label><br>
+                            <label><input type="radio" name="q1" value="C"> Щоб писати пісні</label><br><br>
+
+                            <li>Познач натуральне число:</li>
+                            <label><input type="radio" name="q2" value="A"> –3</label><br>
+                            <label><input type="radio" name="q2" value="B" data-correct="true"> 2</label><br>
+                            <label><input type="radio" name="q2" value="C"> 0</label><br>
+                        </ol>
+                    </div>
+
+                    <button type="button" id="check-test" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; background-color: #2e7d32; color: white; border: none; border-radius: 8px; cursor: pointer;">Перевірити</button>
+                </form>
+            </section>
+        </main>
+
+        <script>
+            const goToTestBtn = document.getElementById('go-to-test');
+            const lectureSection = document.getElementById('lecture-section');
+            const testSection = document.getElementById('test-section');
+            const variants = document.querySelectorAll('.quiz-variant');
+
+            // При натисканні кнопки – показати випадковий варіант тесту
+            goToTestBtn.addEventListener('click', () => {
+              lectureSection.style.display = 'none';
+              testSection.style.display = 'block';
+              const randomIndex = Math.floor(Math.random() * variants.length);
+              variants[randomIndex].style.display = 'block';
+            });
+
+            // Перевірка результатів
+            document.getElementById('check-test').addEventListener('click', () => {
+              let correct = 0;
+              let total = 0;
+              const activeVariant = document.querySelector('.quiz-variant[style*="display: block"]');
+              const inputs = activeVariant.querySelectorAll('input[type="radio"]');
+
+              // Збираємо відповіді
+              const answers = {};
+              inputs.forEach(input => {
+                if (input.checked) {
+                  answers[input.name] = input.value;
+                }
+              });
+
+              // Перевірка правильності
+              const groups = new Set(Array.from(inputs).map(i => i.name));
+              groups.forEach(name => {
+                const selected = activeVariant.querySelector(`input[name="${name}"]:checked`);
+                if (selected && selected.dataset.correct === "true") {
+                  correct++;
+                }
+                total++;
+              });
+
+              const passed = correct === total;
+              const result = {
+                correct,
+                total,
+                passed
+              };
+
+              // Надсилаємо повідомлення в Android
+              if (window.AndroidBridge) {
+                AndroidBridge.sendMessage(JSON.stringify(result));
+              } else {
+                alert(`Результат: ${correct} з ${total}. Пройдено: ${passed}`);
+              }
+            });
+        </script>
+        </body>
+</html>

@@ -5,6 +5,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.content.Context
 import android.util.Log
+import android.webkit.JavascriptInterface
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -126,6 +127,17 @@ fun LessonDetailsScreen(
                     val (fullHtml, baseUrl) = prepareActivity(context, activityPath);
 
                     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+                        data class QuizResult(val correct: Int, val total: Int, val passed: Boolean)
+                        class WebAppBridge {
+
+                            @JavascriptInterface
+                            fun sendMessage(message: String) {
+                                // message приходить у форматі JSON:
+                                // {"correct":2,"total":2,"passed":true}
+
+                                Log.e(this.javaClass.name, message)
+                            }
+                        }
                         AndroidView(
                             factory = { context ->
                                 WebView(context).apply {
@@ -137,6 +149,10 @@ fun LessonDetailsScreen(
                                     settings.builtInZoomControls = false
                                     settings.displayZoomControls = false
                                     webViewClient = WebViewClient()
+                                    addJavascriptInterface(WebAppBridge(), "AndroidBridge")
+//                                    evaluateJavascript("sendMessage") { result ->
+//                                        Log.d("WebView", "JS повернув: $result")
+//                                    }
                                     loadDataWithBaseURL(
                                         baseUrl,
                                         fullHtml,

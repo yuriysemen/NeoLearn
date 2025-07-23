@@ -14,7 +14,6 @@ data class Lesson(
     val id: String,
     val title: String,
     val description: String?,
-    val objectives: List<String>,
     val activities: List<LessonActivity>,
 
     var locatedAt: String?,
