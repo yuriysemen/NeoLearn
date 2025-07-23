@@ -6,7 +6,6 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -26,10 +26,9 @@ import com.neolearn.course.Lesson
 import com.neolearn.course.LessonActivity
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.IOException
 
 
 private fun readAsset(context: Context, path: String): String {
@@ -55,6 +54,7 @@ fun copyAssetToCache(context: Context, assetName: String, outputName: String): F
     return outputFile
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LessonDetailsScreen(
     coursePath: String,
@@ -98,7 +98,6 @@ fun LessonDetailsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scrollState)
                     .padding(24.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
@@ -120,7 +119,6 @@ fun LessonDetailsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scrollState)
                     .padding(24.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
@@ -191,7 +189,12 @@ fun LessonDetailsScreen(
                                     "utf-8",
                                     null)
                             },
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .pointerInteropFilter { event ->
+                                    // Передаємо події WebView напряму
+                                    false
+                                }
                         )
                     }
                 }
