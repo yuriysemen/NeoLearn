@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="katex.min.css">
     <script defer src="katex.min.js"></script>
     <script defer src="auto-render.min.js"></script>
@@ -23,6 +23,15 @@
     padding: 24px;
     color: {{text}};
     line-height: 1.6;
+    -webkit-overflow-scrolling: touch;
+    touch-action: auto;
+    overflow-y: auto;
+  }
+
+  html {
+    -webkit-overflow-scrolling: touch;
+    touch-action: auto;
+    overflow-y: auto;
   }
 
   h1 {

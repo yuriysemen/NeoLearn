@@ -162,7 +162,7 @@ fun LessonDetailsScreen(
                         Log.d("CacheFiles", "File: ${file.name}")
                     }
 
-                    Box(modifier = Modifier.weight(1f)) {
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
                         AndroidView(
                             factory = { context ->
                                 WebView(context).apply {
@@ -170,6 +170,9 @@ fun LessonDetailsScreen(
                                     settings.domStorageEnabled = true
                                     settings.allowFileAccess = true
                                     settings.allowContentAccess = true
+                                    settings.setSupportZoom(false)            // ❗
+                                    settings.builtInZoomControls = false      // ❗
+                                    settings.displayZoomControls = false      // ❗
                                     webViewClient = WebViewClient()
                                     loadDataWithBaseURL(
                                         baseUrl,                  // щоб WebView знайшов style.css
