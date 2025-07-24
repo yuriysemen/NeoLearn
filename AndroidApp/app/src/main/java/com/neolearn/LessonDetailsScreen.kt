@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -68,6 +69,8 @@ fun LessonDetailsScreen(
 
     var dataLoaded by remember { mutableStateOf(false) }
     var loadingCourceError by remember { mutableStateOf(false) }
+
+    var showNextButton by remember { mutableStateOf(true) }
 
     LaunchedEffect(coursePath) {
         try {
@@ -129,9 +132,13 @@ fun LessonDetailsScreen(
                     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
                         data class QuizResult(val correct: Int, val total: Int, val passed: Boolean)
                         class WebAppBridge {
+                            @JavascriptInterface
+                            fun showNextBtn(showBtn: Boolean) {
+                                showNextButton = showBtn;
+                            }
 
                             @JavascriptInterface
-                            fun sendMessage(message: String) {
+                            fun sendMaterialTestData(message: String) {
                                 // message приходить у форматі JSON:
                                 // {"correct":2,"total":2,"passed":true}
 
@@ -185,7 +192,8 @@ fun LessonDetailsScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(56.dp),
+                            .height(56.dp)
+                            .alpha(if (showNextButton) 1f else 0f),
                         shape = MaterialTheme.shapes.medium
                     ) {
                         Text(text = "Наступний крок")

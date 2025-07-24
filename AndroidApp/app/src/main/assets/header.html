@@ -17,73 +17,90 @@
         });
     </script>
     <style>
-  body {
-    font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
-    background-color: {{background}};
-    padding: 24px;
-    color: {{text}};
-    line-height: 1.6;
-    -webkit-overflow-scrolling: touch;
-    touch-action: auto;
-    overflow-y: auto;
-    -webkit-user-select: text;
-    user-select: text;
-  }
+      body {
+        font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+        background-color: {{background}};
+        padding: 24px;
+        color: {{text}};
+        line-height: 1.6;
+        -webkit-overflow-scrolling: touch;
+        touch-action: auto;
+        overflow-y: auto;
+        -webkit-user-select: text;
+        user-select: text;
+      }
 
-  html {
-    -webkit-overflow-scrolling: touch;
-    touch-action: auto;
-    overflow-y: auto;
-  }
+      html {
+        -webkit-overflow-scrolling: touch;
+        touch-action: auto;
+        overflow-y: auto;
+      }
 
-  h1 {
-    font-size: 1.8em;
-    margin-bottom: 0.6em;
-  }
+      h1 {
+        font-size: 1.8em;
+        margin-bottom: 0.6em;
+      }
 
-  h2 {
-    font-size: 1.3em;
-    margin-top: 1.4em;
-  }
+      h2 {
+        font-size: 1.3em;
+        margin-top: 1.4em;
+      }
 
-  p, ul {
-    font-size: 1.05em;
-  }
+      p, ul {
+        font-size: 1.05em;
+      }
 
-  ul {
-    padding-left: 1.2em;
-  }
+      ul {
+        padding-left: 1.2em;
+      }
 
-  .math-inline {
-    font-weight: 600;
-    color: {{math}};
-  }
+      .math-inline {
+        font-weight: 600;
+        color: {{math}};
+      }
 
-  .info-block {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    background-color: {{infoBackground}};
-    padding: 12px 14px;
-    border-left: 4px solid {{infoBorder}};
-    margin: 12px 0;
-    border-radius: 6px;
-    font-size: 1em;
-    line-height: 1.5;
-  }
+      .info-block {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 16px;
+        margin: 10px 0;
+        border-radius: 8px;
+        font-size: 16px;
+        line-height: 1.4;
+      }
 
-  .info-block .icon {
-    font-size: 1.3em;
-    margin-top: 2px;
-  }
+      .question {
+        margin-bottom: 24px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #ddd;
+      }
 
-  .info-block.info      { border-left-color: {{info}}; }
-  .info-block.warning   { border-left-color: {{warning}}; }
-  .info-block.task      { border-left-color: {{task}}; }
-  .info-block.question  { border-left-color: {{question}}; }
-  .info-block.reference { border-left-color: {{reference}} }
-  .info-block.hint      { border-left-color: {{hint}}; }
-  .info-block.term      { border-left-color: {{term}}; }
+      .info-block .icon {
+        flex-shrink: 0;
+        font-size: 20px;
+      }
+
+      .info-block.info      { border-left-color: {{info}}; }
+      .info-block.warning   { border-left-color: {{warning}}; }
+      .info-block.task      { border-left-color: {{task}}; }
+      .info-block.question  { border-left-color: {{question}}; }
+      .info-block.reference { border-left-color: {{reference}} }
+      .info-block.hint      { border-left-color: {{hint}}; }
+      .info-block.term      { border-left-color: {{term}}; }
+
+      .next-button {
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 1em;
+        background-color: #6750A4;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        display: block;
+      }
     </style>
 </head>
 <body>

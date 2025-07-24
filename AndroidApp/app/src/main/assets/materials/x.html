@@ -86,130 +86,376 @@ ul {
     </style>
 </head>
 <body>
-        <main style="font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; line-height: 1.6;">
+<section id="lecture-section">
+    <div class="info-block info">
+        <span class="icon">ℹ️</span> Натуральні числа — це числа, які ми використовуємо для лічби предметів: <b>1, 2, 3, ...</b>
+    </div>
 
-            <!-- Лекційний блок -->
-            <section id="lecture-section" style="background-color: #e3f2fd; border-radius: 12px; padding: 16px;">
-                <h1 style="color: #1565c0;">🔢 Що таке натуральні числа?</h1>
-                <p>Натуральні числа — це звичайні числа, якими ми рахуємо предмети: <strong>1, 2, 3, 4, 5...</strong></p>
-                <p>Вони завжди додатні і не містять дробів чи нуля.</p>
-                <h3>📌 Приклади з життя:</h3>
-                <ul>
-                    <li>3 олівці</li>
-                    <li>12 книг</li>
-                    <li>26 учнів у класі</li>
-                </ul>
-                <button id="go-to-test" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; background-color: #1565c0; color: white; border: none; border-radius: 8px; cursor: pointer;">Перейти до тесту</button>
-            </section>
+    <p>
+        Ще з дитинства ми звикли рахувати: <i>один, два, три…</i>. Це і є натуральні числа.
+        Вони допомагають нам рахувати предмети, вимірювати відстані, час та багато іншого.
+    </p>
 
-            <!-- Тестовий блок -->
-            <section id="test-section" style="display: none; margin-top: 20px;">
-                <h2 style="color: #2e7d32;">🧪 Тест: Перевір свої знання</h2>
-                <form id="quiz-form" style="margin-top: 10px;">
+    <div class="info-block.term">
+        <span class="icon">📚</span>
+        <b>Натуральні числа</b> — це числа, які використовують для лічби. Множина натуральних чисел позначається як <span class="math-inline">$\mathbb{N}$</span>.
+    </div>
 
-                    <!-- Варіант 1 -->
-                    <div class="quiz-variant" id="variant-1" style="display:none;">
-                        <ol>
-                            <li>Що таке натуральні числа?</li>
-                            <label><input type="radio" name="q1" value="A" data-correct="true"> Числа для лічби</label><br>
-                            <label><input type="radio" name="q1" value="B"> Від’ємні числа</label><br>
-                            <label><input type="radio" name="q1" value="C"> Дробові числа</label><br><br>
+    <h2>Де ми використовуємо натуральні числа?</h2>
 
-                            <li>Яке число не є натуральним?</li>
-                            <label><input type="radio" name="q2" value="A"> 5</label><br>
-                            <label><input type="radio" name="q2" value="B" data-correct="true"> 0</label><br>
-                            <label><input type="radio" name="q2" value="C"> 17</label><br>
-                        </ol>
-                    </div>
+    <ul>
+        <li>Кількість книг на полиці</li>
+        <li>Скільки учнів у класі</li>
+        <li>Номер сторінки у підручнику</li>
+    </ul>
 
-                    <!-- Варіант 2 -->
-                    <div class="quiz-variant" id="variant-2" style="display:none;">
-                        <ol>
-                            <li>Найменше натуральне число:</li>
-                            <label><input type="radio" name="q1" value="A"> 0</label><br>
-                            <label><input type="radio" name="q1" value="B" data-correct="true"> 1</label><br>
-                            <label><input type="radio" name="q1" value="C"> –1</label><br><br>
+    <div class="info-block.hint">
+        <span class="icon">💡</span>
+        Натуральні числа не бувають від’ємними або дробовими. Наприклад, <span class="math-inline">$-5$</span> або <span class="math-inline">$3.2$</span> — це не натуральні числа.
+    </div>
 
-                            <li>Яке з чисел є натуральним?</li>
-                            <label><input type="radio" name="q2" value="A"> –5</label><br>
-                            <label><input type="radio" name="q2" value="B"> 0</label><br>
-                            <label><input type="radio" name="q2" value="C" data-correct="true"> 12</label><br>
-                        </ol>
-                    </div>
+    <div class="info-block.warning">
+        <span class="icon">⚠️</span>
+        <b>0</b> — у деяких джерелах вважається натуральним числом, у нашому курсі — <b>ні</b>.
+    </div>
 
-                    <!-- Варіант 3 -->
-                    <div class="quiz-variant" id="variant-3" style="display:none;">
-                        <ol>
-                            <li>Для чого потрібні натуральні числа?</li>
-                            <label><input type="radio" name="q1" value="A" data-correct="true"> Щоб рахувати предмети</label><br>
-                            <label><input type="radio" name="q1" value="B"> Щоб малювати</label><br>
-                            <label><input type="radio" name="q1" value="C"> Щоб писати пісні</label><br><br>
+    <div class="info-block.task">
+        <span class="icon">✅</span>
+        Порахуй, скільки предметів знаходиться навколо тебе, які можна порахувати натуральними числами.
+    </div>
 
-                            <li>Познач натуральне число:</li>
-                            <label><input type="radio" name="q2" value="A"> –3</label><br>
-                            <label><input type="radio" name="q2" value="B" data-correct="true"> 2</label><br>
-                            <label><input type="radio" name="q2" value="C"> 0</label><br>
-                        </ol>
-                    </div>
+    <div class="info-block.question">
+        <span class="icon">❓</span>
+        Яке число є першим натуральним числом? А яке — десятим?
+    </div>
 
-                    <button type="button" id="check-test" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; background-color: #2e7d32; color: white; border: none; border-radius: 8px; cursor: pointer;">Перевірити</button>
-                </form>
-            </section>
-        </main>
+    <div class="info-block.reference">
+        <span class="icon">📘</span>
+        Детальніше про множини чисел можна дізнатись у наступному уроці.
+    </div>
 
-        <script>
-            const goToTestBtn = document.getElementById('go-to-test');
-            const lectureSection = document.getElementById('lecture-section');
-            const testSection = document.getElementById('test-section');
-            const variants = document.querySelectorAll('.quiz-variant');
+    <button id="go-to-test" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; background-color: #1565c0; color: white; border: none; border-radius: 8px; cursor: pointer;">Перейти до тесту</button>
+</section>
 
-            // При натисканні кнопки – показати випадковий варіант тесту
-            goToTestBtn.addEventListener('click', () => {
-              lectureSection.style.display = 'none';
-              testSection.style.display = 'block';
-              const randomIndex = Math.floor(Math.random() * variants.length);
-              variants[randomIndex].style.display = 'block';
-            });
+<!-- Тестовий блок -->
+<section id="test-section" style="display:none;">
+    <h2 style="color: #2e7d32;">🧪 Тест: Перевір свої знання</h2>
+    <form id="quiz-form" style="margin-top: 10px;">
+        <div id='variant1' class="quiz-variant" style="display:none;">
+            <div class='question'>1. Яке з чисел є натуральним?<br>
+                <label><input type='radio' name='variant1q1'> –5</label><br>
+                <label><input type='radio' name='variant1q1' data-correct='true'> 12</label><br>
+                <label><input type='radio' name='variant1q1'> 0</label><br>
+                <label><input type='radio' name='variant1q1'> 3.5</label><br>
+                <label><input type='radio' name='variant1q1'> –10</label><br>
+            </div>
+            <p></p>
+            <div class='question'>2. У класі 28 учнів. Яке це число?<br>
+                <label><input type='radio' name='variant1q2'> Від’ємне</label><br>
+                <label><input type='radio' name='variant1q2' data-correct='true'> Натуральне</label><br>
+                <label><input type='radio' name='variant1q2'> Дробове</label><br>
+                <label><input type='radio' name='variant1q2'> Ірраціональне</label><br>
+                <label><input type='radio' name='variant1q2'> Змішане</label><br>
+            </div>
+            <p></p>
+            <div class='question'>3. Вибери всі натуральні числа: –3, 0, 1, 4, 2.5, 7<br>
+                <label><input type='checkbox' name='variant1q3'> –3</label><br>
+                <label><input type='checkbox' name='variant1q3'> 0</label><br>
+                <label><input type='checkbox' name='variant1q3' data-correct='true'> 1</label><br>
+                <label><input type='checkbox' name='variant1q3' data-correct='true'> 4</label><br>
+                <label><input type='checkbox' name='variant1q3' data-correct='true'> 7</label><br>
+            </div>
+            <p></p>
+            <div class='question'>4. Яке число НЕ є натуральним?<br>
+                <label><input type='radio' name='variant1q4'> 15</label><br>
+                <label><input type='radio' name='variant1q4'> 1</label><br>
+                <label><input type='radio' name='variant1q4' data-correct='true'> 0</label><br>
+                <label><input type='radio' name='variant1q4'> 9</label><br>
+                <label><input type='radio' name='variant1q4'> 100</label><br>
+            </div>
+            <p></p>
+            <div class='question'>5. Натуральні числа починаються з:<br>
+                <label><input type='radio' name='variant1q5' data-correct='true'> 1</label><br>
+                <label><input type='radio' name='variant1q5'> 0</label><br>
+                <label><input type='radio' name='variant1q5'> –1</label><br>
+                <label><input type='radio' name='variant1q5'> 2</label><br>
+                <label><input type='radio' name='variant1q5'> 10</label><br>
+            </div>
+            <button onclick="checkAnswers('variant1')">Перевірити</button>
+            <div class='result'></div>
+        </div><hr>
+        <div id='variant2' class="quiz-variant" style="display:none;">
+            <div class='question'>1. Яке з наведених є натуральним?<br>
+                <label><input type='radio' name='variant2q1' data-correct='true'> 24</label><br>
+                <label><input type='radio' name='variant2q1'> –2</label><br>
+                <label><input type='radio' name='variant2q1'> 1/2</label><br>
+                <label><input type='radio' name='variant2q1'> 3.14</label><br>
+                <label><input type='radio' name='variant2q1'> 0</label><br>
+            </div>
+            <div class='question'>2. Чи є 0 натуральним числом?<br>
+                <label><input type='radio' name='variant2q2'> Так</label><br>
+                <label><input type='radio' name='variant2q2' data-correct='true'> Ні</label><br>
+                <label><input type='radio' name='variant2q2'> Залежить від підручника</label><br>
+                <label><input type='radio' name='variant2q2'> Лише для комп'ютерів</label><br>
+                <label><input type='radio' name='variant2q2'> Не знаю</label><br>
+            </div>
+            <div class='question'>3. Вибери всі натуральні числа: –1, 0, 5, 2.7, 8<br>
+                <label><input type='checkbox' name='variant2q3'> –1</label><br>
+                <label><input type='checkbox' name='variant2q3'> 0</label><br>
+                <label><input type='checkbox' name='variant2q3' data-correct='true'> 5</label><br>
+                <label><input type='checkbox' name='variant2q3'> 2.7</label><br>
+                <label><input type='checkbox' name='variant2q3' data-correct='true'> 8</label><br>
+            </div>
+            <div class='question'>4. До натуральних чисел НЕ належить:<br>
+                <label><input type='radio' name='variant2q4'> 7</label><br>
+                <label><input type='radio' name='variant2q4' data-correct='true'> –8</label><br>
+                <label><input type='radio' name='variant2q4'> 9</label><br>
+                <label><input type='radio' name='variant2q4'> 21</label><br>
+                <label><input type='radio' name='variant2q4'> 100</label><br>
+            </div>
+            <div class='question'>5. Укажи правильне твердження:<br>
+                <label><input type='radio' name='variant2q5' data-correct='true'> Натуральні числа використовують для лічби</label><br>
+                <label><input type='radio' name='variant2q5'> Вони завжди більші за 100</label><br>
+                <label><input type='radio' name='variant2q5'> Вони є дробами</label><br>
+                <label><input type='radio' name='variant2q5'> Вони включають від’ємні числа</label><br>
+                <label><input type='radio' name='variant2q5'> Не використовуються в математиці</label><br>
+            </div>
+            <button onclick="checkAnswers('variant2')">Перевірити</button><div class='result'></div></div><hr>
+        <div id='variant3' class="quiz-variant" style="display:none;">
+            <div class='question'>1. Чи є число 100 натуральним?<br>
+                <label><input type='radio' name='variant3q1' data-correct='true'> Так</label><br>
+                <label><input type='radio' name='variant3q1'> Ні</label><br>
+                <label><input type='radio' name='variant3q1'> Тільки при діленні</label><br>
+                <label><input type='radio' name='variant3q1'> Не знаю</label><br>
+                <label><input type='radio' name='variant3q1'> Лише для парних чисел</label><br>
+            </div>
+            <div class='question'>2. Вкажи рядок, що складається лише з натуральних чисел:<br>
+                <label><input type='radio' name='variant3q2'> –2, 3, 5</label><br>
+                <label><input type='radio' name='variant3q2'> 0, 1, –1</label><br>
+                <label><input type='radio' name='variant3q2'> 1/2, 2, 3</label><br>
+                <label><input type='radio' name='variant3q2' data-correct='true'> 2, 7, 15</label><br>
+                <label><input type='radio' name='variant3q2'> 3.5, 6, 9</label><br>
+            </div>
+            <div class='question'>3. Число 0 відноситься до:<br>
+                <label><input type='radio' name='variant3q3' data-correct='true'> Не натуральних</label><br>
+                <label><input type='radio' name='variant3q3'> Натуральних</label><br>
+                <label><input type='radio' name='variant3q3'> Від’ємних</label><br>
+                <label><input type='radio' name='variant3q3'> Ірраціональних</label><br>
+                <label><input type='radio' name='variant3q3'> Змішаних</label><br>
+            </div>
+            <div class='question'>4. Яке з чисел не є натуральним:<br>
+                <label><input type='radio' name='variant3q4'> 11</label><br>
+                <label><input type='radio' name='variant3q4'> 18</label><br>
+                <label><input type='radio' name='variant3q4' data-correct='true'> –4</label><br>
+                <label><input type='radio' name='variant3q4'> 25</label><br>
+                <label><input type='radio' name='variant3q4'> 30</label><br>
+            </div>
+            <div class='question'>5. Натуральні числа – це:<br>
+                <label><input type='radio' name='variant3q5' data-correct='true'> 1, 2, 3, 4, …</label><br>
+                <label><input type='radio' name='variant3q5'> –1, –2, –3</label><br>
+                <label><input type='radio' name='variant3q5'> 0.1, 0.2</label><br>
+                <label><input type='radio' name='variant3q5'> Всі від –∞ до +∞</label><br>
+                <label><input type='radio' name='variant3q5'> Дробові</label><br>
+            </div>
+            <button onclick="checkAnswers('variant3')">Перевірити</button><div class='result'></div></div><hr>
+        <div id='variant4' class="quiz-variant" style="display:none;">
+            <div class='question'>1. Укажи правильну характеристику натуральних чисел:<br>
+                <label><input type='radio' name='variant4q1'> Вони можуть бути від’ємними</label><br>
+                <label><input type='radio' name='variant4q1'> Вони є дробами</label><br>
+                <label><input type='radio' name='variant4q1' data-correct='true'> Вони використовуються для лічби предметів</label><br>
+                <label><input type='radio' name='variant4q1'> Вони лише парні</label><br>
+                <label><input type='radio' name='variant4q1'> Вони починаються з нуля</label><br>
+            </div>
+            <div class='question'>2. Вибери всі натуральні числа: –10, 3, 6, 2.5, 0<br>
+                <label><input type='checkbox' name='variant4q2'> –10</label><br>
+                <label><input type='checkbox' name='variant4q2' data-correct='true'> 3</label><br>
+                <label><input type='checkbox' name='variant4q2' data-correct='true'> 6</label><br>
+                <label><input type='checkbox' name='variant4q2'> 2.5</label><br>
+                <label><input type='checkbox' name='variant4q2'> 0</label><br>
+            </div>
+            <div class='question'>3. Яке з тверджень є правильним:<br>
+                <label><input type='radio' name='variant4q3' data-correct='true'> Натуральні числа безкінечні</label><br>
+                <label><input type='radio' name='variant4q3'> Натуральні числа закінчуються на 1 000 000</label><br>
+                <label><input type='radio' name='variant4q3'> Є тільки парні</label><br>
+                <label><input type='radio' name='variant4q3'> Містять усі дробові</label><br>
+                <label><input type='radio' name='variant4q3'> Містять всі від’ємні</label><br>
+            </div>
+            <div class='question'>4. Чи можна сказати, що 7 – це натуральне число?<br>
+                <label><input type='radio' name='variant4q4' data-correct='true'> Так</label><br>
+                <label><input type='radio' name='variant4q4'> Ні</label><br>
+                <label><input type='radio' name='variant4q4'> Лише у США</label><br>
+                <label><input type='radio' name='variant4q4'> Тільки в теорії</label><br>
+                <label><input type='radio' name='variant4q4'> Не знаю</label><br>
+            </div>
+            <div class='question'>5. Знайди приклад, де використовують натуральні числа:<br>
+                <label><input type='radio' name='variant4q5'> Температура –3°</label><br>
+                <label><input type='radio' name='variant4q5' data-correct='true'> Кількість сторінок у книзі</label><br>
+                <label><input type='radio' name='variant4q5'> Довжина в метрах з дробами</label><br>
+                <label><input type='radio' name='variant4q5'> Рівень моря</label><br>
+                <label><input type='radio' name='variant4q5'> pH-значення</label><br>
+            </div>
+            <button onclick="checkAnswers('variant4')">Перевірити</button><div class='result'></div></div>
+        <div id='variant5' class="quiz-variant" style="display:none;">
+            <div class='question'>1. Вибери натуральне число:<br>
+                <label><input type='radio' name='variant5q1'> –7</label><br>
+                <label><input type='radio' name='variant5q1'> 0</label><br>
+                <label><input type='radio' name='variant5q1' data-correct='true'> 2</label><br>
+                <label><input type='radio' name='variant5q1'> 3.14</label><br>
+                <label><input type='radio' name='variant5q1'> –1</label><br>
+            </div>
+            <div class='question'>2. Число 50 належить до:<br>
+                <label><input type='radio' name='variant5q2' data-correct='true'> Натуральних</label><br>
+                <label><input type='radio' name='variant5q2'> Від’ємних</label><br>
+                <label><input type='radio' name='variant5q2'> Дробових</label><br>
+                <label><input type='radio' name='variant5q2'> Ірраціональних</label><br>
+                <label><input type='radio' name='variant5q2'> Змішаних</label><br>
+            </div>
+            <div class='question'>3. Вибери всі натуральні числа: –5, 12, 1, 0.5, 8<br>
+                <label><input type='checkbox' name='variant5q3'> –5</label><br>
+                <label><input type='checkbox' name='variant5q3' data-correct='true'> 12</label><br>
+                <label><input type='checkbox' name='variant5q3' data-correct='true'> 1</label><br>
+                <label><input type='checkbox' name='variant5q3'> 0.5</label><br>
+                <label><input type='checkbox' name='variant5q3' data-correct='true'> 8</label><br>
+            </div>
+            <div class='question'>4. Чи є 1 натуральним числом?<br>
+                <label><input type='radio' name='variant5q4' data-correct='true'> Так</label><br>
+                <label><input type='radio' name='variant5q4'> Ні</label><br>
+                <label><input type='radio' name='variant5q4'> Тільки парні є натуральні</label><br>
+                <label><input type='radio' name='variant5q4'> Лише непарні</label><br>
+                <label><input type='radio' name='variant5q4'> Не знаю</label><br>
+            </div>
+            <div class='question'>5. Натуральні числа використовують для:<br>
+                <label><input type='radio' name='variant5q5'> Позначення боргу</label><br>
+                <label><input type='radio' name='variant5q5' data-correct='true'> Лічби предметів</label><br>
+                <label><input type='radio' name='variant5q5'> Запису дробів</label><br>
+                <label><input type='radio' name='variant5q5'> Температури нижче нуля</label><br>
+                <label><input type='radio' name='variant5q5'> Вимірювання часу у дробах</label><br>
+            </div>
+            <button onclick="checkAnswers('variant5')">Перевірити</button><div class='result'></div>
+        </div>
+    </form>
+</section>
+<!--        &lt;!&ndash; Варіант 1 &ndash;&gt;-->
+<!--        <div class="quiz-variant" id="variant-1" style="display:none;">-->
+<!--            <ol>-->
+<!--                <li>Що таке натуральні числа?</li>-->
+<!--                <label><input type="radio" name="q1" value="A" data-correct="true"> Числа, які ми використовуємо для лічби</label><br>-->
+<!--                <label><input type="radio" name="q1" value="B"> Від’ємні числа</label><br>-->
+<!--                <label><input type="radio" name="q1" value="C"> Дробові числа</label><br><br>-->
 
-            // Перевірка результатів
-            document.getElementById('check-test').addEventListener('click', () => {
-              let correct = 0;
-              let total = 0;
-              const activeVariant = document.querySelector('.quiz-variant[style*="display: block"]');
-              const inputs = activeVariant.querySelectorAll('input[type="radio"]');
+<!--                <li>Яке з чисел <strong>не</strong> є натуральним?</li>-->
+<!--                <label><input type="radio" name="q2" value="A"> 5</label><br>-->
+<!--                <label><input type="radio" name="q2" value="B" data-correct="true"> 0</label><br>-->
+<!--                <label><input type="radio" name="q2" value="C"> 17</label><br>-->
 
-              // Збираємо відповіді
-              const answers = {};
-              inputs.forEach(input => {
-                if (input.checked) {
-                  answers[input.name] = input.value;
-                }
-              });
+<!--                <li>У класі 28 учнів. Яке це число?</li>-->
+<!--                <label><input type="radio" name="q2" value="A"> Дробове</label><br>-->
+<!--                <label><input type="radio" name="q2" value="B" data-correct="true"> Натуральне</label><br>-->
+<!--                <label><input type="radio" name="q2" value="C"> Від’ємне</label><br>-->
 
-              // Перевірка правильності
-              const groups = new Set(Array.from(inputs).map(i => i.name));
-              groups.forEach(name => {
-                const selected = activeVariant.querySelector(`input[name="${name}"]:checked`);
-                if (selected && selected.dataset.correct === "true") {
-                  correct++;
-                }
-                total++;
-              });
+<!--                <li>Вибери всі натуральні числа:</li>-->
+<!--                <label><input type="checkbox" name="q3" value="-3"> –3</label><br>-->
+<!--                <label><input type="checkbox" name="q3" value="0"> 0</label><br>-->
+<!--                <label><input type="checkbox" name="q3" value="1" data-correct="true"> 1</label><br>-->
+<!--                <label><input type="checkbox" name="q3" value="4" data-correct="true"> 4</label><br>-->
+<!--                <label><input type="checkbox" name="q3" value="2.5"> 2.5</label><br>-->
+<!--                <label><input type="checkbox" name="q3" value="7" data-correct="true"> 7</label>-->
 
-              const passed = correct === total;
-              const result = {
-                correct,
-                total,
-                passed
-              };
+<!--            </ol>-->
+<!--        </div>-->
 
-              // Надсилаємо повідомлення в Android
-              if (window.AndroidBridge) {
-                AndroidBridge.sendMessage(JSON.stringify(result));
-              } else {
-                alert(`Результат: ${correct} з ${total}. Пройдено: ${passed}`);
-              }
-            });
-        </script>
+<!--        &lt;!&ndash; Варіант 2 &ndash;&gt;-->
+<!--        <div class="quiz-variant" id="variant-2" style="display:none;">-->
+<!--            <ol>-->
+<!--                <li>Найменше натуральне число - це:</li>-->
+<!--                <label><input type="radio" name="q1" value="A"> 0</label><br>-->
+<!--                <label><input type="radio" name="q1" value="B" data-correct="true"> 1</label><br>-->
+<!--                <label><input type="radio" name="q1" value="C"> –1</label><br><br>-->
+
+<!--                <li>Яке з чисел є натуральним?</li>-->
+<!--                <label><input type="radio" name="q2" value="A"> –5</label><br>-->
+<!--                <label><input type="radio" name="q2" value="B"> 0</label><br>-->
+<!--                <label><input type="radio" name="q2" value="C" data-correct="true"> 12</label><br>-->
+
+<!--                <li>У коробці лежить 6 м’ячів. Яке це число?</li>-->
+<!--                <label><input type="radio" name="q2" value="A"> Натуральне</label><br>-->
+<!--                <label><input type="radio" name="q2" value="B"> Від’ємне</label><br>-->
+<!--                <label><input type="radio" name="q2" value="C" data-correct="true"> Дробове</label><br>-->
+
+<!--            </ol>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Варіант 3 &ndash;&gt;-->
+<!--        <div class="quiz-variant" id="variant-3" style="display:none;">-->
+<!--            <ol>-->
+<!--                <li>Для чого потрібні натуральні числа?</li>-->
+<!--                <label><input type="radio" name="q1" value="A" data-correct="true"> Щоб рахувати предмети</label><br>-->
+<!--                <label><input type="radio" name="q1" value="B"> Щоб малювати</label><br>-->
+<!--                <label><input type="radio" name="q1" value="C"> Щоб писати пісні</label><br><br>-->
+
+<!--                <li>Познач натуральне число:</li>-->
+<!--                <label><input type="radio" name="q2" value="A"> –3</label><br>-->
+<!--                <label><input type="radio" name="q2" value="B" data-correct="true"> 2</label><br>-->
+<!--                <label><input type="radio" name="q2" value="C"> 0</label><br>-->
+<!--            </ol>-->
+<!--        </div>-->
+
+<!--        <button type="button" id="check-test" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; background-color: #2e7d32; color: white; border: none; border-radius: 8px; cursor: pointer;">Перевірити</button>-->
+<!--    </form>-->
+<!--</section>-->
+<script>
+    const goToTestBtn = document.getElementById('go-to-test');
+    const lectureSection = document.getElementById('lecture-section');
+    const testSection = document.getElementById('test-section');
+    const variants = document.querySelectorAll('.quiz-variant');
+
+    // При натисканні кнопки – показати випадковий варіант тесту
+    goToTestBtn.addEventListener('click', () => {
+      lectureSection.style.display = 'none';
+      testSection.style.display = 'block';
+      const randomIndex = Math.floor(Math.random() * variants.length);
+      variants[randomIndex].style.display = 'block';
+    });
+
+    // Перевірка результатів
+    document.getElementById('check-test').addEventListener('click', () => {
+      let correct = 0;
+      let total = 0;
+      const activeVariant = document.querySelector('.quiz-variant[style*="display: block"]');
+      const inputs = activeVariant.querySelectorAll('input[type="radio"]');
+
+      // Збираємо відповіді
+      const answers = {};
+      inputs.forEach(input => {
+        if (input.checked) {
+          answers[input.name] = input.value;
+        }
+      });
+
+      // Перевірка правильності
+      const groups = new Set(Array.from(inputs).map(i => i.name));
+      groups.forEach(name => {
+        const selected = activeVariant.querySelector(`input[name="${name}"]:checked`);
+        if (selected && selected.dataset.correct === "true") {
+          correct++;
+        }
+        total++;
+      });
+
+      const passed = correct === total;
+      const result = {
+        correct,
+        total,
+        passed
+      };
+
+      // Надсилаємо повідомлення в Android
+      if (window.AndroidBridge) {
+        AndroidBridge.sendMessage(JSON.stringify(result));
+      } else {
+        alert(`Результат: ${correct} з ${total}. Пройдено: ${passed}`);
+      }
+    });
+</script>
         </body>
 </html>

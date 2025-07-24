@@ -12,12 +12,6 @@ activities:
     comment: "Вступ до натуральних чисел"
     path: 020 Explanation what is that.html
 
-  - fileType: "html"
-    activityType: practice_tasks
-    path: 030 CheckLearn_{variant}_{number}.html
-    completionCriteria:
-      - score >= 80
-
 
 #prerequisites:
 #  - lesson-000  # Наприклад: Вступ до арифметики
