@@ -1,6 +1,7 @@
 package com.neolearn
 
 import CourseLoader.prepareActivity
+import android.app.Activity
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.content.Context
@@ -71,6 +72,7 @@ fun LessonDetailsScreen(
     var loadingCourceError by remember { mutableStateOf(false) }
 
     var showNextButton by remember { mutableStateOf(true) }
+    val webViewState = remember { mutableStateOf<WebView?>(null) }
 
     LaunchedEffect(coursePath) {
         try {
@@ -135,6 +137,18 @@ fun LessonDetailsScreen(
                             @JavascriptInterface
                             fun showNextBtn(showBtn: Boolean) {
                                 showNextButton = showBtn;
+                                Log.i(this.javaClass.name, "showNextBtn($showBtn)")
+                            }
+
+                            @JavascriptInterface
+                            fun showPageFromStart() {
+                                Log.i(this.javaClass.name, "showPageFromStart()")
+                                (context as Activity).runOnUiThread {
+                                    webViewState.value?.evaluateJavascript(
+                                        "window.scrollTo(0, 0);",
+                                        null
+                                    )
+                                }
                             }
 
                             @JavascriptInterface
@@ -142,7 +156,7 @@ fun LessonDetailsScreen(
                                 // message приходить у форматі JSON:
                                 // {"correct":2,"total":2,"passed":true}
 
-                                Log.e(this.javaClass.name, message)
+                                Log.i(this.javaClass.name, message)
                             }
                         }
                         AndroidView(
@@ -167,6 +181,7 @@ fun LessonDetailsScreen(
                                         "utf-8",
                                         null
                                     )
+                                    webViewState.value = this
                                 }
                             },
                             update = { webView ->

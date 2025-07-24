@@ -252,12 +252,13 @@
 </section>
 
 <script>
-    // Hide button next
-    if (window.AndroidBridge) {
-      AndroidBridge.showNextBtn(false);
-    } else {
-      alert(`Trying to hide next button.`);
-    }
+  // Hide button next
+  if (window.AndroidBridge) {
+    AndroidBridge.showNextBtn(false);
+    AndroidBridge.showPageFromStart();
+  } else {
+    alert(`Trying to hide next button.`);
+  }
 
   const goToTestBtn = document.getElementById('go-to-test');
   const lectureSection = document.getElementById('lecture-section');
@@ -270,6 +271,7 @@
     testSection.style.display = 'block';
     const randomIndex = Math.floor(Math.random() * variants.length);
     variants[randomIndex].style.display = 'block';
+    AndroidBridge.showPageFromStart();
   });
 
   // Перевірка результатів
