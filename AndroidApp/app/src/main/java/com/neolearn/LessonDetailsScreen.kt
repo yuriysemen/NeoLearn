@@ -132,7 +132,7 @@ fun LessonDetailsScreen(
                     val (fullHtml, baseUrl) = prepareActivity(context, activityPath);
 
                     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
-                        data class QuizResult(val correct: Int, val total: Int, val passed: Boolean)
+
                         class WebAppBridge {
                             @JavascriptInterface
                             fun showNextBtn(showBtn: Boolean) {
