@@ -1,4 +1,33 @@
-<section id="lecture-section">
+<!-- Introduction -->
+<section id="introduction">
+    <p>
+        У цьому уроці ти дізнаєшся, що таке <b>натуральні числа</b>, як вони позначаються, де використовуються у повсякденному житті та які числа не є натуральними.
+    </p>
+
+    <div class="info-block.info">
+        <span class="icon">ℹ️</span>
+        Цей урок допоможе тобі розрізняти натуральні та інші типи чисел, а також закладе основу для вивчення арифметики.
+    </div>
+
+    <h2>Підготуй перед початком</h2>
+
+    <ul>
+        <li>Зошит у клітинку</li>
+        <li>Олівець або ручку</li>
+        <li>Лінійку</li>
+        <li>Настрій до навчання 😊</li>
+    </ul>
+
+    <div class="info-block.task">
+        <span class="icon">✅</span>
+        Перевір, чи все готово. Якщо так — натисни <b>«Почати урок»</b>!
+    </div>
+
+    <button class="next-button" id="go-to-lecture">Перейти до уроку</button>
+</section>
+
+<!-- Лекційний блок -->
+<section id="lecture-section" style="display:none;">
     <div class="info-block info">
         <span class="icon">ℹ️</span><div>Натуральні числа — це числа, які ми використовуємо для лічби предметів: <b>1, 2, 3, 4, ...</b></div>
     </div>
@@ -52,7 +81,7 @@
 <!-- Тестовий блок -->
 <section id="test-section" style="display:none;">
     <h2 style="color: #2e7d32;">🧪 Тест: Перевір свої знання</h2>
-    <form id="quiz-form" style="margin-top: 10px;">
+    <div id="quiz-form" style="margin-top: 10px;">
         <div id='variant1' class="quiz-variant" style="display:none;">
             <div data-question-id="variant1q1_group" data-type="radio" class='question'>
                 1. Яке з чисел є натуральним?<br>
@@ -265,8 +294,7 @@
         </div>
 
         <button id='check-test' class="next-button">Перевірити</button>
-        <div class='result'></div>
-    </form>
+    </div>
 </section>
 
 <script>
@@ -284,6 +312,8 @@
       alert(`Trying to hide next button failed.`);
     }
 
+    const introductionSection = document.getElementById('introduction');
+    const goToLectureBtn = document.getElementById('go-to-lecture');
     const goToTestBtn = document.getElementById('go-to-test');
     const lectureSection = document.getElementById('lecture-section');
     const testSection = document.getElementById('test-section');
@@ -291,11 +321,33 @@
 
     let variantIndex = 0;
 
-    // При натисканні кнопки – показати випадковий варіант тесту
+    // При натисканні кнопки переходу до уроку – показати контекст уроку
+    goToLectureBtn.addEventListener('click', () => {
+      console.log('goToLectureBtn click received...');
+
+      introductionSection.style.display = 'none';
+      lectureSection.style.display = 'block';
+      testSection.style.display = 'none';
+      variantIndex = Math.floor(Math.random() * variants.length);
+      variants[variantIndex].style.display = 'block';
+
+      console.log('Scrolling to page start');
+      AndroidBridge.showPageFromStart();
+      console.log('Scrolled to page start');
+    });
+
+    // При натисканні кнопки Закінчення лекції – показати випадковий варіант тесту
     goToTestBtn.addEventListener('click', () => {
+      console.log('goToTestBtn click received...');
       lectureSection.style.display = 'none';
       testSection.style.display = 'block';
+
       variantIndex = Math.floor(Math.random() * variants.length);
+      console.log('Test variant choosed = ' + variantIndex);
+
+      for (i = 0; i < variants.length; i++) {
+        variants[i].style.display = 'none';
+      }
       variants[variantIndex].style.display = 'block';
 
       console.log('Scrolling to page start');
@@ -335,8 +387,8 @@
 
       if (window.AndroidBridge) {
           console.log('sendMaterialTestData("' + result + '");');
-          AndroidBridge.sendMaterialTestData(JSON.stringify(result));
-          console.log('sent MaterialTestData()');
+          resultOfSendingData = AndroidBridge.sendMaterialTestData(JSON.stringify(result));
+          console.log('sent MaterialTestData()' + resultOfSendingData);
       } else {
           console.log('Результат:', result);
           alert(JSON.stringify(result, null, 2));

@@ -154,8 +154,6 @@ object CourseLoader {
             .replace("{{term}}", "#f06292")
 
         return Pair(header2 + body + footer, context.cacheDir.toURI().toString())
-//        val fullHtml =  header2 + body + footer
-//        val baseUrl = context.cacheDir.toURI().toString()
     }
 
 }

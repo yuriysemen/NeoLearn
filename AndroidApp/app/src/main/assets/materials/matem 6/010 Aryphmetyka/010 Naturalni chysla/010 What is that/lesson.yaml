@@ -4,10 +4,6 @@ description: "На цьому уроці учні навчаться викон�
 
 activities:
   - fileType: "html"
-    activityType: intro
-    path: 010 Intro.html
-
-  - fileType: "html"
     activityType: material
     comment: "Вступ до натуральних чисел"
     path: 020 Explanation what is that.html

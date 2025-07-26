@@ -30,8 +30,15 @@ import com.neolearn.course.Lesson
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
+import com.google.gson.Gson
+import com.neolearn.course.AnswerData
+import com.neolearn.course.TestDataParsing
+import com.neolearn.course.Variant
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Optional
 
 
 fun Color.toHex(): String {
@@ -69,10 +76,12 @@ fun LessonDetailsScreen(
     var activityNumber by remember { mutableIntStateOf(0) }
 
     var dataLoaded by remember { mutableStateOf(false) }
-    var loadingCourceError by remember { mutableStateOf(false) }
+    var loadingCourseError by remember { mutableStateOf(false) }
 
     var showNextButton by remember { mutableStateOf(true) }
     val webViewState = remember { mutableStateOf<WebView?>(null) }
+
+    val testDataParser = TestDataParsing()
 
     LaunchedEffect(coursePath) {
         try {
@@ -84,7 +93,7 @@ fun LessonDetailsScreen(
             dataLoaded = true
         } catch (e: Exception) {
             Log.e(this.javaClass.name, "Course structure does have an error", e)
-            loadingCourceError = true
+            loadingCourseError = true
         }
     }
 
@@ -92,7 +101,7 @@ fun LessonDetailsScreen(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primaryContainer
     ) {
-        if (loadingCourceError) {
+        if (loadingCourseError) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -152,13 +161,55 @@ fun LessonDetailsScreen(
                             }
 
                             @JavascriptInterface
-                            fun sendMaterialTestData(message: String) {
-                                // message приходить у форматі JSON:
-                                // {"correct":2,"total":2,"passed":true}
+                            fun sendMaterialTestData(message: String): String {
+                                val testData = testDataParser.getTestDataFromString(fullHtml)
 
-                                Log.i(this.javaClass.name, message)
+                                val response: String = try {
+                                    val gson = Gson()
+                                    val messageJson = gson.fromJson(message, AnswerData::class.java)
+
+                                    val variantData: Optional<Variant> = testData.stream().filter{ variant -> variant.variantId == "variant${messageJson.variantId}"}.findFirst()
+
+                                    if (variantData.isEmpty) throw IllegalStateException("Variant is not found.")
+
+                                    var correct = 0
+
+                                    for (question in variantData.get().questions) {
+                                        if (question.type == "radio") {
+                                            for (x in question.options) {
+                                                if (messageJson.answers[question.questionId] == x.value) {
+                                                    correct += 1
+                                                }
+                                            }
+                                        }
+                                        if (question.type == "checkbox") {
+                                            for (x in question.options) {
+                                                if (messageJson.answers[question.questionId] == x.value) {
+                                                    correct += 1
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    Log.i(this.javaClass.name, message)
+                                    """{
+                                        |   "result": ${correct},
+                                        |   "max": 70,
+                                        |   "passed": "true"
+                                        | }""".trimMargin()
+                                }
+                                catch (e: Exception) {
+                                    """{
+                                        |   "result": 0,
+                                        |   "max": 0,
+                                        |   "passed": "false"
+                                        | }""".trimMargin()
+                                }
+
+                                return response
                             }
                         }
+
                         AndroidView(
                             factory = { context ->
                                 WebView(context).apply {
@@ -171,9 +222,6 @@ fun LessonDetailsScreen(
                                     settings.displayZoomControls = false
                                     webViewClient = WebViewClient()
                                     addJavascriptInterface(WebAppBridge(), "AndroidBridge")
-//                                    evaluateJavascript("sendMessage") { result ->
-//                                        Log.d("WebView", "JS повернув: $result")
-//                                    }
                                     loadDataWithBaseURL(
                                         baseUrl,
                                         fullHtml,
