@@ -33,6 +33,7 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import com.google.gson.Gson
 import com.neolearn.course.AnswerData
 import com.neolearn.course.TestDataParsing
+import com.neolearn.course.UserAnswer
 import com.neolearn.course.Variant
 import java.io.File
 import java.io.FileOutputStream
@@ -165,6 +166,7 @@ fun LessonDetailsScreen(
                                 val response: String = try {
                                     var totalAcrossAllQuestion = 0
                                     var totalCorrectAnswers = 0
+                                    var userAnswers = mutableListOf<UserAnswer>()
 
                                     val gson = Gson()
                                     val messageJson = gson.fromJson(message, AnswerData::class.java)
@@ -200,11 +202,13 @@ fun LessonDetailsScreen(
 
                                             var takenPoints = 0
                                             var possiblePoints = 0
+                                            val userAnswer = UserAnswer(question, messageJson.answers[question.questionId]!!)
+
                                             for (options in question.options) {
                                                 if (options.dataCorrect) possiblePoints += 1
 
                                                 for (answer in messageJson.answers[question.questionId]!!) {
-                                                    if (answer.equals(options.value)) {
+                                                    if (answer == options.value) {
                                                         if (options.dataCorrect) {
                                                             takenPoints += 1
                                                         }
@@ -216,6 +220,9 @@ fun LessonDetailsScreen(
                                             if (takenPoints == possiblePoints) {
                                                 totalCorrectAnswers += 1
                                             }
+                                            userAnswer.points = takenPoints.toFloat()
+                                            userAnswer.maxPoints = possiblePoints.toFloat()
+                                            userAnswers.add(userAnswer);
                                         }
                                     }
 
@@ -223,7 +230,8 @@ fun LessonDetailsScreen(
                                     """{
                                         |   "result": ${totalCorrectAnswers},
                                         |   "max": ${totalAcrossAllQuestion},
-                                        |   "passed": "${totalCorrectAnswers > totalAcrossAllQuestion * 0.8}"
+                                        |   "passed": "${totalCorrectAnswers > totalAcrossAllQuestion * 0.8}",
+                                        |   "userAnswers": "${gson.toJson(userAnswers)}"
                                         | }""".trimMargin()
                                 }
                                 catch (_: Exception) {

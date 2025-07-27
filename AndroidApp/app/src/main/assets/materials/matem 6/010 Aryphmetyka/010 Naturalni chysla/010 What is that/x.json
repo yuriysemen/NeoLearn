@@ -1,0 +1,200 @@
+[
+  {
+    "maxPoints": 1.0,
+    "points": 1.0,
+    "question": {
+      "options": [
+        {
+          "dataCorrect": false,
+          "text": "–7",
+          "value": "-7"
+        },
+        {
+          "dataCorrect": false,
+          "text": "0",
+          "value": "0"
+        },
+        {
+          "dataCorrect": true,
+          "text": "2",
+          "value": "2"
+        },
+        {
+          "dataCorrect": false,
+          "text": "3.14",
+          "value": "3.14"
+        },
+        {
+          "dataCorrect": false,
+          "text": "–1",
+          "value": "-1"
+        }
+      ],
+      "questionId": "variant5q1_group",
+      "text": "1. Вибери натуральне число:",
+      "type": "radio"
+    },
+    "selectedAnswers": [
+      "2"
+    ]
+  },
+  {
+    "maxPoints": 1.0,
+    "points": 0.0,
+    "question": {
+      "options": [
+        {
+          "dataCorrect": true,
+          "text": "Натуральних",
+          "value": "Натуральних"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Від’ємних",
+          "value": "Від’ємних"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Дробових",
+          "value": "Дробових"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Ірраціональних",
+          "value": "Ірраціональних"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Змішаних",
+          "value": "Змішаних"
+        }
+      ],
+      "questionId": "variant5q2_group",
+      "text": "2. Число 50 належить до:",
+      "type": "radio"
+    },
+    "selectedAnswers": [
+      "Змішаних"
+    ]
+  },
+  {
+    "maxPoints": 3.0,
+    "points": 3.0,
+    "question": {
+      "options": [
+        {
+          "dataCorrect": false,
+          "text": "–5",
+          "value": "-5"
+        },
+        {
+          "dataCorrect": true,
+          "text": "12",
+          "value": "12"
+        },
+        {
+          "dataCorrect": true,
+          "text": "1",
+          "value": "1"
+        },
+        {
+          "dataCorrect": false,
+          "text": "0.5",
+          "value": "0.5"
+        },
+        {
+          "dataCorrect": true,
+          "text": "8",
+          "value": "8"
+        }
+      ],
+      "questionId": "variant5q3_group",
+      "text": "3. Вибери всі натуральні числа:",
+      "type": "checkbox"
+    },
+    "selectedAnswers": [
+      "-5",
+      "12",
+      "1",
+      "8"
+    ]
+  },
+  {
+    "maxPoints": 1.0,
+    "points": 1.0,
+    "question": {
+      "options": [
+        {
+          "dataCorrect": true,
+          "text": "Так",
+          "value": "Так"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Ні",
+          "value": "Ні"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Тільки парні є натуральні",
+          "value": "Тільки парні є натуральні"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Лише непарні",
+          "value": "Лише непарні"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Не знаю",
+          "value": "Не знаю"
+        }
+      ],
+      "questionId": "variant5q4_group",
+      "text": "4. Чи є 1 натуральним числом?",
+      "type": "radio"
+    },
+    "selectedAnswers": [
+      "Так"
+    ]
+  },
+  {
+    "maxPoints": 1.0,
+    "points": 1.0,
+    "question": {
+      "options": [
+        {
+          "dataCorrect": false,
+          "text": "Позначення боргу",
+          "value": "Позначення боргу"
+        },
+        {
+          "dataCorrect": true,
+          "text": "Лічби предметів",
+          "value": "Лічби предметів"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Запису дробів",
+          "value": "Запису дробів"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Температури нижче нуля",
+          "value": "Температури нижче нуля"
+        },
+        {
+          "dataCorrect": false,
+          "text": "Вимірювання часу у дробах",
+          "value": "Вимірювання часу у дробах"
+        }
+      ],
+      "questionId": "variant5q5_group",
+      "text": "5. Натуральні числа використовують для:",
+      "type": "radio"
+    },
+    "selectedAnswers": [
+      "Лічби предметів"
+    ]
+  }
+]

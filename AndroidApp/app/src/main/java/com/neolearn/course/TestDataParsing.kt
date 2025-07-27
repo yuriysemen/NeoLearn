@@ -21,6 +21,7 @@ data class UserAnswer(
     val question: Question,
     val selectedAnswers: List<String>,
     val userText: String? = null,
+    var maxPoints: Float = 0f,
     var points: Float = 0f
 )
 
