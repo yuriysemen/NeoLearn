@@ -368,7 +368,7 @@
 
           if (type === 'radio') {
               const selected = question.querySelector('input[type="radio"]:checked');
-              answers[qId] = selected ? selected.value : null;
+              answers[qId] = selected ? Array.of(selected.value) : [];
 
           } else if (type === 'checkbox') {
               const selected = question.querySelectorAll('input[type="checkbox"]:checked');

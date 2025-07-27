@@ -17,13 +17,20 @@ data class Question(
     val options: List<Option>
 )
 
+data class UserAnswer(
+    val question: Question,
+    val selectedAnswers: List<String>,
+    val userText: String? = null,
+    var points: Float = 0f
+)
+
 data class Variant(
     val variantId: String,
     val questions: List<Question>
 )
 
 data class AnswerData(
-    val answers: Map<String, Any?>,
+    val answers: Map<String, List<String>>,
     val variantId: Int
 )
 

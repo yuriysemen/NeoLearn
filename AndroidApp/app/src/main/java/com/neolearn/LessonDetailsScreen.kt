@@ -34,8 +34,6 @@ import com.google.gson.Gson
 import com.neolearn.course.AnswerData
 import com.neolearn.course.TestDataParsing
 import com.neolearn.course.Variant
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Optional
@@ -165,40 +163,70 @@ fun LessonDetailsScreen(
                                 val testData = testDataParser.getTestDataFromString(fullHtml)
 
                                 val response: String = try {
+                                    var totalAcrossAllQuestion = 0
+                                    var totalCorrectAnswers = 0
+
                                     val gson = Gson()
                                     val messageJson = gson.fromJson(message, AnswerData::class.java)
 
-                                    val variantData: Optional<Variant> = testData.stream().filter{ variant -> variant.variantId == "variant${messageJson.variantId}"}.findFirst()
+                                    val selectedVariant: Optional<Variant> = testData.stream().filter{ variant -> variant.variantId == "variant${messageJson.variantId}"}.findFirst()
 
-                                    if (variantData.isEmpty) throw IllegalStateException("Variant is not found.")
+                                    if (selectedVariant.isEmpty) throw IllegalStateException("Variant is not found.")
 
-                                    var correct = 0
+                                    for (question in selectedVariant.get().questions) {
+                                        if (question.type == "radio" || question.type == "checkbox") {
+                                            if (!messageJson.answers.containsKey(question.questionId)) {
+                                                Log.e(
+                                                    this.javaClass.name,
+                                                    "Request from webPage does not contain answers for give question id."
+                                                )
+                                                continue
+                                            }
 
-                                    for (question in variantData.get().questions) {
-                                        if (question.type == "radio") {
-                                            for (x in question.options) {
-                                                if (messageJson.answers[question.questionId] == x.value) {
-                                                    correct += 1
+                                            var answersForQuestion = messageJson.answers[question.questionId]
+
+                                            if (answersForQuestion == null || answersForQuestion.isEmpty()) {
+                                                Log.e(this.javaClass.name, "Request from webPage does not contain answers for given question.")
+                                                continue
+                                            }
+
+                                            if ((question.type == "radio") && (answersForQuestion.size > 1)) {
+                                                Log.e(
+                                                    this.javaClass.name,
+                                                    "Request from webPage does contain more than 1 answers for given question."
+                                                )
+                                                continue
+                                            }
+
+                                            var takenPoints = 0
+                                            var possiblePoints = 0
+                                            for (options in question.options) {
+                                                if (options.dataCorrect) possiblePoints += 1
+
+                                                for (answer in messageJson.answers[question.questionId]!!) {
+                                                    if (answer.equals(options.value)) {
+                                                        if (options.dataCorrect) {
+                                                            takenPoints += 1
+                                                        }
+                                                    }
                                                 }
                                             }
-                                        }
-                                        if (question.type == "checkbox") {
-                                            for (x in question.options) {
-                                                if (messageJson.answers[question.questionId] == x.value) {
-                                                    correct += 1
-                                                }
+
+                                            totalAcrossAllQuestion += 1
+                                            if (takenPoints == possiblePoints) {
+                                                totalCorrectAnswers += 1
                                             }
                                         }
                                     }
 
                                     Log.i(this.javaClass.name, message)
                                     """{
-                                        |   "result": ${correct},
-                                        |   "max": 70,
-                                        |   "passed": "true"
+                                        |   "result": ${totalCorrectAnswers},
+                                        |   "max": ${totalAcrossAllQuestion},
+                                        |   "passed": "${totalCorrectAnswers > totalAcrossAllQuestion * 0.8}"
                                         | }""".trimMargin()
                                 }
-                                catch (e: Exception) {
+                                catch (_: Exception) {
                                     """{
                                         |   "result": 0,
                                         |   "max": 0,
