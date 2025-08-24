@@ -1,4 +1,4 @@
-id: 010 What is that
+id: 0010 Natural_Numbers_and_Zero
 title: "🔢 Що таке натуральні числа?"
 description: "На цьому уроці учні навчаться виконувати додавання натуральних чисел з переходом через розряд."
 
@@ -6,7 +6,7 @@ activities:
   - fileType: "html"
     activityType: material
     comment: "Вступ до натуральних чисел"
-    path: 020 Explanation what is that.html
+    path: 010 Explanation what is that.html
 
 
 #prerequisites:

@@ -18,8 +18,51 @@ const goToTestBtn = document.getElementById('go-to-test');
 const lectureSection = document.getElementById('lecture-section');
 const testSection = document.getElementById('test-section');
 const variants = document.querySelectorAll('.quiz-variant');
+const nextPartitionBtn = document.getElementById('next-partition')
+const prevPartitionBtn = document.getElementById('prev-partition')
 
 let variantIndex = 0;
+let visiblePartition = 1;
+let partitionsCount = 1;
+
+function goToPartition(number) {
+    console.log('goToPartition(' + number + '). Current part number is ' + visiblePartition);
+
+    for (var i = 1; i < 100000; i++) {
+        if (document.querySelector(`#part` + i) == null) {
+            break;
+        }
+        document.querySelector(`#part` + i).style.display = (i === number ? "block" : "none");
+        partitionsCount = i;
+    }
+
+    console.log('Partitions count is ' + partitionsCount);
+
+    if (prevPartitionBtn != null) {
+        prevPartitionBtn.style.display = (number == 1 ? 'none' : 'block');
+        console.log('Back button visibility is ' + prevPartitionBtn.style.display);
+    }
+    if (nextPartitionBtn != null) {
+        nextPartitionBtn.style.display = (number == partitionsCount ? 'none' : 'block');
+        console.log('Next button visibility is ' + nextPartitionBtn.style.display);
+    }
+    visiblePartition = number;
+    goToTestBtn.style.display = (number != partitionsCount ? 'none' : 'block');
+};
+
+if (nextPartitionBtn != null) {
+    nextPartitionBtn.addEventListener('click', () => {
+        console.log('goToNextPartition(). Current part number is ' + visiblePartition);
+        goToPartition(visiblePartition + 1);
+    });
+}
+
+if (prevPartitionBtn != null) {
+    prevPartitionBtn.addEventListener('click', () => {
+        console.log('goToPreviousPartition(). Current part number is ' + visiblePartition);
+        goToPartition(visiblePartition - 1);
+    });
+}
 
 // При натисканні кнопки переходу до уроку – показати контекст уроку
 goToLectureBtn.addEventListener('click', () => {
@@ -34,6 +77,8 @@ goToLectureBtn.addEventListener('click', () => {
   console.log('Scrolling to page start');
   AndroidBridge.showPageFromStart();
   console.log('Scrolled to page start');
+
+  goToPartition(1);
 });
 
 // При натисканні кнопки Закінчення лекції – показати випадковий варіант тесту
