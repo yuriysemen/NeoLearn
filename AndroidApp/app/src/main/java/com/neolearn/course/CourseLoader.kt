@@ -137,6 +137,7 @@ object CourseLoader {
         val body = readAsset(context, activityPath)
 
         copyAssetToCache(context, "katex/katex.min.css", "katex.min.css")
+        copyAssetToCache(context, "logic.js", "logic.js")
         copyAssetToCache(context, "katex/katex.min.js", "katex.min.js")
         copyAssetToCache(context, "katex/auto-render.min.js", "auto-render.min.js")
 
