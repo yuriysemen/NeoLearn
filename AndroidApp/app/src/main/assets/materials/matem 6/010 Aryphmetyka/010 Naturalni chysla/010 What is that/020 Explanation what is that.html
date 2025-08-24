@@ -386,9 +386,11 @@
       };
 
       if (window.AndroidBridge) {
-          console.log('sendMaterialTestData("' + result + '");');
+          console.log('sendMaterialTestData("' + JSON.stringify(result) + '");');
           resultOfSendingData = AndroidBridge.sendMaterialTestData(JSON.stringify(result));
           console.log('sent MaterialTestData()' + resultOfSendingData);
+
+
       } else {
           console.log('Результат:', result);
           alert(JSON.stringify(result, null, 2));
