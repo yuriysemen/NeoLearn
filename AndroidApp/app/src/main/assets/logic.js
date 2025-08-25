@@ -21,9 +21,11 @@ const variants = document.querySelectorAll('.quiz-variant');
 const nextPartitionBtn = document.getElementById('next-partition')
 const prevPartitionBtn = document.getElementById('prev-partition')
 
-let variantIndex = 0;
 let visiblePartition = 1;
 let partitionsCount = 1;
+
+let variantIndex = 0;
+let questionIndex = 1;
 
 function goToPartition(number) {
     console.log('goToPartition(' + number + '). Current part number is ' + visiblePartition);
@@ -81,6 +83,22 @@ goToLectureBtn.addEventListener('click', () => {
   goToPartition(1);
 });
 
+function makeTestInTestVariantVisible(variantIndex, questionNumber) {
+  console.log('Variants count is ' + variants.length);
+  for (var i = 0; i < variants.length; i++) {
+    variants[i].style.display = 'none';
+  }
+  variants[variantIndex].style.display = 'block';
+  console.log('Variant is ' + variantIndex);
+
+  var questions = variants[variantIndex].querySelectorAll('.question');
+  console.log('Questions count is ' + questions.length);
+
+  for (var i = 0; i < questions.length; i++) {
+    questions[i].style.display = (i === questionNumber - 1 ? "block" : "none");
+  }
+}
+
 // При натисканні кнопки Закінчення лекції – показати випадковий варіант тесту
 goToTestBtn.addEventListener('click', () => {
   console.log('goToTestBtn click received...');
@@ -90,14 +108,13 @@ goToTestBtn.addEventListener('click', () => {
   variantIndex = Math.floor(Math.random() * variants.length);
   console.log('Test variant choosed = ' + variantIndex);
 
-  for (i = 0; i < variants.length; i++) {
-    variants[i].style.display = 'none';
-  }
-  variants[variantIndex].style.display = 'block';
+  makeTestInTestVariantVisible(variantIndex, 1);
 
   console.log('Scrolling to page start');
   AndroidBridge.showPageFromStart();
   console.log('Scrolled to page start');
+
+  questionIndex = 1;
 });
 
 // Перевірка результатів
@@ -106,28 +123,28 @@ document.getElementById('check-test').addEventListener('click', () => {
   const questions = activeVariant.querySelectorAll('[data-question-id]');
 
   const answers = {};
+  question = questions[questionIndex - 1];
 
-  questions.forEach(question => {
-      const qId = question.dataset.questionId;
-      const type = question.dataset.type; // Наприклад: "radio", "checkbox", "text"
+  const qId = question.dataset.questionId;
+  const type = question.dataset.type; // Наприклад: "radio", "checkbox", "text"
 
-      if (type === 'radio') {
-          const selected = question.querySelector('input[type="radio"]:checked');
-          answers[qId] = selected ? Array.of(selected.value) : [];
+  if (type === 'radio') {
+      const selected = question.querySelector('input[type="radio"]:checked');
+      answers[qId] = selected ? Array.of(selected.value) : [];
 
-      } else if (type === 'checkbox') {
-          const selected = question.querySelectorAll('input[type="checkbox"]:checked');
-          answers[qId] = Array.from(selected).map(cb => cb.value);
+  } else if (type === 'checkbox') {
+      const selected = question.querySelectorAll('input[type="checkbox"]:checked');
+      answers[qId] = Array.from(selected).map(cb => cb.value);
 
-      } else if (type === 'text') {
-          const input = question.querySelector('input[type="text"], textarea');
-          answers[qId] = input ? input.value.trim() : '';
-      }
-  });
+  } else if (type === 'text') {
+      const input = question.querySelector('input[type="text"], textarea');
+      answers[qId] = input ? input.value.trim() : '';
+  }
 
   const result = {
-      answers: answers,
-      variantId: variantIndex + 1
+      variantId: variantIndex + 1,
+      questionIndex: questionIndex,
+      answers: answers
   };
 
   if (window.AndroidBridge) {
