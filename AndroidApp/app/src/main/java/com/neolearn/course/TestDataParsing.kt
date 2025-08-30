@@ -14,7 +14,8 @@ data class Question(
     val questionId: String,
     val type: String,
     val text: String,
-    val options: List<Option>
+    val options: List<Option>,
+    val points: Int
 )
 
 data class UserAnswer(
@@ -31,8 +32,9 @@ data class Variant(
 )
 
 data class AnswerData(
-    val answers: Map<String, List<String>>,
-    val variantId: Int
+    val variantId: String,
+    val questionId: String,
+    val answer: List<String>
 )
 
 class TestDataParsing {
@@ -54,6 +56,10 @@ class TestDataParsing {
             for (question in questionDivs) {
                 val qId = question.attr("data-question-id")
                 val type = question.attr("data-type")
+                var points = 1
+                if (question.attr("points") != "") {
+                    points = question.attr("points").toInt()
+                }
 
                 // Текст питання: перший текстовий вузол
                 val textNode = question.ownText().trim()
@@ -68,7 +74,7 @@ class TestDataParsing {
                     options.add(Option(value, labelText, dataCorrect))
                 }
 
-                questions.add(Question(qId, type, textNode, options))
+                questions.add(Question(qId, type, textNode, options, points))
             }
 
             variants.add(Variant(variantId, questions))

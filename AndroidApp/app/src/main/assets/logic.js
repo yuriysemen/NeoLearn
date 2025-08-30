@@ -18,13 +18,17 @@ const goToTestBtn = document.getElementById('go-to-test');
 const lectureSection = document.getElementById('lecture-section');
 const testSection = document.getElementById('test-section');
 const variants = document.querySelectorAll('.quiz-variant');
-const nextPartitionBtn = document.getElementById('next-partition')
-const prevPartitionBtn = document.getElementById('prev-partition')
+const nextPartitionBtn = document.getElementById('next-partition');
+const prevPartitionBtn = document.getElementById('prev-partition');
+const testResultsSection = document.getElementById('test-results-section');
+const testResultsPointsLabel = document.getElementById('test-results-points');
+const testResultsFinishBtn = document.getElementById('test-results-finish-lesson');
+const testResultsGoAgainBtn = document.getElementById('test-results-go-again-lesson');
 
 let visiblePartition = 1;
 let partitionsCount = 1;
 
-let variantIndex = 0;
+let chosenVariantId = 0;
 let questionIndex = 1;
 
 function goToPartition(number) {
@@ -73,8 +77,6 @@ goToLectureBtn.addEventListener('click', () => {
   introductionSection.style.display = 'none';
   lectureSection.style.display = 'block';
   testSection.style.display = 'none';
-  variantIndex = Math.floor(Math.random() * variants.length);
-  variants[variantIndex].style.display = 'block';
 
   console.log('Scrolling to page start');
   AndroidBridge.showPageFromStart();
@@ -83,19 +85,22 @@ goToLectureBtn.addEventListener('click', () => {
   goToPartition(1);
 });
 
-function makeTestInTestVariantVisible(variantIndex, questionNumber) {
+function makeTestInTestVariantVisible(questionNumber) {
   console.log('Variants count is ' + variants.length);
   for (var i = 0; i < variants.length; i++) {
-    variants[i].style.display = 'none';
-  }
-  variants[variantIndex].style.display = 'block';
-  console.log('Variant is ' + variantIndex);
+    if (variants[i].id === chosenVariantId) {
+      variants[i].style.display = 'block';
 
-  var questions = variants[variantIndex].querySelectorAll('.question');
-  console.log('Questions count is ' + questions.length);
+      var questions = variants[i].querySelectorAll('.question');
+      console.log('Questions count is ' + questions.length);
 
-  for (var i = 0; i < questions.length; i++) {
-    questions[i].style.display = (i === questionNumber - 1 ? "block" : "none");
+      for (var i = 0; i < questions.length; i++) {
+        questions[i].style.display = (i === questionNumber - 1 ? "block" : "none");
+      }
+    }
+    else {
+      variants[i].style.display = 'none';
+    }
   }
 }
 
@@ -105,54 +110,70 @@ goToTestBtn.addEventListener('click', () => {
   lectureSection.style.display = 'none';
   testSection.style.display = 'block';
 
-  variantIndex = Math.floor(Math.random() * variants.length);
-  console.log('Test variant choosed = ' + variantIndex);
+  const variantIndex = Math.floor(Math.random() * variants.length);
+  chosenVariantId = "variant" + (variantIndex + 1);
+  TestingListener.testVariantWasChoose(chosenVariantId);
+  console.log('Test variant chosen = ', chosenVariantId);
 
-  makeTestInTestVariantVisible(variantIndex, 1);
+  questionIndex = 1;
+  makeTestInTestVariantVisible(questionIndex);
 
   console.log('Scrolling to page start');
   AndroidBridge.showPageFromStart();
-  console.log('Scrolled to page start');
-
-  questionIndex = 1;
 });
 
 // Перевірка результатів
-document.getElementById('check-test').addEventListener('click', () => {
-  const activeVariant = document.querySelector(`.quiz-variant#variant${variantIndex + 1}`);
+document.getElementById('check-test-question').addEventListener('click', () => {
+  const activeVariant = document.querySelector(`.quiz-variant#${chosenVariantId}`);
   const questions = activeVariant.querySelectorAll('[data-question-id]');
 
-  const answers = {};
   question = questions[questionIndex - 1];
 
   const qId = question.dataset.questionId;
-  const type = question.dataset.type; // Наприклад: "radio", "checkbox", "text"
+  const type = question.dataset.type;
 
   if (type === 'radio') {
       const selected = question.querySelector('input[type="radio"]:checked');
-      answers[qId] = selected ? Array.of(selected.value) : [];
+      answeredValue = selected ? Array.of(selected.value) : [];
 
   } else if (type === 'checkbox') {
       const selected = question.querySelectorAll('input[type="checkbox"]:checked');
-      answers[qId] = Array.from(selected).map(cb => cb.value);
-
-  } else if (type === 'text') {
-      const input = question.querySelector('input[type="text"], textarea');
-      answers[qId] = input ? input.value.trim() : '';
+      answeredValue = Array.from(selected).map(cb => cb.value);
   }
 
   const result = {
-      variantId: variantIndex + 1,
-      questionIndex: questionIndex,
-      answers: answers
+      variantId: chosenVariantId,
+      questionId: qId,
+      answer: answeredValue
   };
 
   if (window.AndroidBridge) {
       console.log('sendMaterialTestData("' + JSON.stringify(result) + '");');
-      resultOfSendingData = AndroidBridge.sendMaterialTestData(JSON.stringify(result));
+      resultOfSendingData = TestingListener.sendMaterialTestData(JSON.stringify(result));
       console.log('sent MaterialTestData()' + resultOfSendingData);
   } else {
-      console.log('Результат:', result);
+      console.log('Результат: ', result);
       alert(JSON.stringify(result, null, 2));
   }
+
+  questionIndex += 1;
+  if (questionIndex < questions.length) {
+    makeTestInTestVariantVisible(questionIndex);
+  } else {
+    goToTestResults()
+  }
 });
+
+function goToTestResults() {
+  console.log('goToTestResultsBtn click received...');
+  testSection.style.display = 'none';
+  testResultsSection.style.display = 'block';
+
+  const testingResults = JSON.parse(TestingListener.getTestResult());
+  console.log('test results: ' + testingResults);
+
+  testResultsPointsLabel.innerText = testingResults.collectedPoints + "/" + testingResults.totalPoints;
+}
+//const testResultsSection = document.getElementById('test-results');
+//const testResultsFinishBtn = document.getElementById('test-results-finish-lesson');
+//const testResultsGoAgainBtn = document.getElementById('test-results-go-again-lesson');

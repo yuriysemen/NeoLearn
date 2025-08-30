@@ -33,6 +33,7 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import com.google.gson.Gson
 import com.neolearn.course.AnswerData
 import com.neolearn.course.TestDataParsing
+import com.neolearn.course.TestingListener
 import com.neolearn.course.UserAnswer
 import com.neolearn.course.Variant
 import java.io.File
@@ -79,8 +80,6 @@ fun LessonDetailsScreen(
 
     var showNextButton by remember { mutableStateOf(true) }
     val webViewState = remember { mutableStateOf<WebView?>(null) }
-
-    val testDataParser = TestDataParsing()
 
     LaunchedEffect(coursePath) {
         try {
@@ -158,97 +157,14 @@ fun LessonDetailsScreen(
                                     )
                                 }
                             }
-
-                            @JavascriptInterface
-                            fun sendMaterialTestData(message: String): String {
-                                val testData = testDataParser.getTestDataFromString(fullHtml)
-
-                                val response: String = try {
-                                    var totalAcrossAllQuestion = 0
-                                    var totalCorrectAnswers = 0
-                                    var userAnswers = mutableListOf<UserAnswer>()
-
-                                    val gson = Gson()
-                                    val messageJson = gson.fromJson(message, AnswerData::class.java)
-
-                                    val selectedVariant: Optional<Variant> = testData.stream().filter{ variant -> variant.variantId == "variant${messageJson.variantId}"}.findFirst()
-
-                                    if (selectedVariant.isEmpty) throw IllegalStateException("Variant is not found.")
-
-                                    for (question in selectedVariant.get().questions) {
-                                        if (question.type == "radio" || question.type == "checkbox") {
-                                            if (!messageJson.answers.containsKey(question.questionId)) {
-                                                Log.e(
-                                                    this.javaClass.name,
-                                                    "Request from webPage does not contain answers for give question id."
-                                                )
-                                                continue
-                                            }
-
-                                            var answersForQuestion = messageJson.answers[question.questionId]
-
-                                            if (answersForQuestion == null || answersForQuestion.isEmpty()) {
-                                                Log.e(this.javaClass.name, "Request from webPage does not contain answers for given question.")
-                                                continue
-                                            }
-
-                                            if ((question.type == "radio") && (answersForQuestion.size > 1)) {
-                                                Log.e(
-                                                    this.javaClass.name,
-                                                    "Request from webPage does contain more than 1 answers for given question."
-                                                )
-                                                continue
-                                            }
-
-                                            var takenPoints = 0
-                                            var possiblePoints = 0
-                                            val userAnswer = UserAnswer(question, messageJson.answers[question.questionId]!!)
-
-                                            for (options in question.options) {
-                                                if (options.dataCorrect) possiblePoints += 1
-
-                                                for (answer in messageJson.answers[question.questionId]!!) {
-                                                    if (answer == options.value) {
-                                                        if (options.dataCorrect) {
-                                                            takenPoints += 1
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            totalAcrossAllQuestion += 1
-                                            if (takenPoints == possiblePoints) {
-                                                totalCorrectAnswers += 1
-                                            }
-                                            userAnswer.points = takenPoints.toFloat()
-                                            userAnswer.maxPoints = possiblePoints.toFloat()
-                                            userAnswers.add(userAnswer);
-                                        }
-                                    }
-
-                                    Log.i(this.javaClass.name, message)
-                                    """{
-                                        |   "result": ${totalCorrectAnswers},
-                                        |   "max": ${totalAcrossAllQuestion},
-                                        |   "passed": "${totalCorrectAnswers > totalAcrossAllQuestion * 0.8}",
-                                        |   "userAnswers": "${gson.toJson(userAnswers)}"
-                                        | }""".trimMargin()
-                                }
-                                catch (_: Exception) {
-                                    """{
-                                        |   "result": 0,
-                                        |   "max": 0,
-                                        |   "passed": "false"
-                                        | }""".trimMargin()
-                                }
-
-                                return response
-                            }
                         }
 
                         AndroidView(
                             factory = { context ->
                                 WebView(context).apply {
+                                    val testingListener = TestingListener()
+                                    testingListener.testData = TestDataParsing().getTestDataFromString(fullHtml)
+
                                     settings.javaScriptEnabled = true
                                     settings.domStorageEnabled = true
                                     settings.allowFileAccess = true
@@ -258,6 +174,7 @@ fun LessonDetailsScreen(
                                     settings.displayZoomControls = false
                                     webViewClient = WebViewClient()
                                     addJavascriptInterface(WebAppBridge(), "AndroidBridge")
+                                    addJavascriptInterface(testingListener, "TestingListener")
                                     loadDataWithBaseURL(
                                         baseUrl,
                                         fullHtml,
