@@ -70,8 +70,7 @@ if (prevPartitionBtn != null) {
     });
 }
 
-// При натисканні кнопки переходу до уроку – показати контекст уроку
-goToLectureBtn.addEventListener('click', () => {
+function goToLectureFn() {
   console.log('goToLectureBtn click received...');
 
   introductionSection.style.display = 'none';
@@ -83,7 +82,7 @@ goToLectureBtn.addEventListener('click', () => {
   console.log('Scrolled to page start');
 
   goToPartition(1);
-});
+}
 
 function makeTestInTestVariantVisible(questionNumber) {
   console.log('Variants count is ' + variants.length);
@@ -103,6 +102,8 @@ function makeTestInTestVariantVisible(questionNumber) {
     }
   }
 }
+
+goToLectureBtn.addEventListener('click', goToLectureFn);
 
 // При натисканні кнопки Закінчення лекції – показати випадковий варіант тесту
 goToTestBtn.addEventListener('click', () => {
@@ -156,8 +157,8 @@ document.getElementById('check-test-question').addEventListener('click', () => {
       alert(JSON.stringify(result, null, 2));
   }
 
-  questionIndex += 1;
   if (questionIndex < questions.length) {
+    questionIndex += 1;
     makeTestInTestVariantVisible(questionIndex);
   } else {
     goToTestResults()
@@ -173,7 +174,17 @@ function goToTestResults() {
   console.log('test results: ' + testingResults);
 
   testResultsPointsLabel.innerText = testingResults.collectedPoints + "/" + testingResults.totalPoints;
+  if (testingResults.collectedPoints >= testingResults.totalPoints * 0.9) {
+    testResultsFinishBtn.style.display = 'block';
+    testResultsGoAgainBtn.style.display = 'none';
+  }
+  else {
+    testResultsFinishBtn.style.display = 'none';
+    testResultsGoAgainBtn.style.display = 'block';
+  }
 }
-//const testResultsSection = document.getElementById('test-results');
-//const testResultsFinishBtn = document.getElementById('test-results-finish-lesson');
-//const testResultsGoAgainBtn = document.getElementById('test-results-go-again-lesson');
+
+testResultsGoAgainBtn.addEventListener('click', () => {
+    testResultsSection.style.display = 'none';
+    goToLectureFn();
+});
