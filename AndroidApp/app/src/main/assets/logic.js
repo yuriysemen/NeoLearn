@@ -40,6 +40,7 @@ function goToPartition(number) {
         }
         document.querySelector(`#part` + i).style.display = (i === number ? "block" : "none");
         partitionsCount = i;
+        AndroidBridge.showPageFromStart();
     }
 
     console.log('Partitions count is ' + partitionsCount);
