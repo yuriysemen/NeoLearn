@@ -143,6 +143,17 @@ function goToLectureFn() {
   goToPartition(1);
 }
 
+function cleanAllChooses(variantId) {
+    console.log('CleanAllChooses...');
+    for (var i = 0; i < variants.length; i++) {
+        variants[i].querySelectorAll('input[type=radio], input[type=checkbox]')
+            .forEach(input => {
+                console.log('Renew choosed state: ' + input.name);
+                input.checked = false;
+            });
+    }
+}
+
 function goToTestFn() {
     console.log('goToTestBtn click received...');
 
@@ -150,8 +161,8 @@ function goToTestFn() {
     testSection.style.display = 'block';
 
     if (chosenVariantId < 0) {
-        // variant is not choosed yet.
         chosenVariantId = "variant" + (Math.floor(Math.random() * variants.length) + 1);
+        cleanAllChooses(chosenVariantId);
     }
     TestingListener.testVariantWasChoose(chosenVariantId);
     console.log('Test variant chosen = ', chosenVariantId);
@@ -220,6 +231,7 @@ function checkTestAnswersFn() {
     makeTestInTestVariantVisible(questionIndex);
   } else {
     goToTestResults()
+    makeTestInTestVariantVisible(-1);
   }
 }
 
@@ -239,11 +251,17 @@ if (prevPartitionBtn != null) {
     });
 }
 
-testResultsGoAgainBtn.addEventListener('click', goToLectureFn);
+testResultsGoAgainBtn.addEventListener('click', () => {
+    console.log("Go to start of lesson.")
+    chosenVariantId = -1;
+    goToLectureFn();
+})
+
 goToLectureBtn.addEventListener('click', goToLectureFn);
 goToTestBtn.addEventListener('click', () => {
     console.log("Adding to historyStack the next option: go to test.")
     historyStack.push("go to test");
     goToTestFn();
 })
+
 checkTestQuestionBtn.addEventListener('click', checkTestAnswersFn)
