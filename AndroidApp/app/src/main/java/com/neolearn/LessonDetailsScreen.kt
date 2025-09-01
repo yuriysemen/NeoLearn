@@ -7,9 +7,13 @@ import android.webkit.WebViewClient
 import android.content.Context
 import android.util.Log
 import android.webkit.JavascriptInterface
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,15 +34,11 @@ import com.neolearn.course.Lesson
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
-import com.google.gson.Gson
-import com.neolearn.course.AnswerData
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.neolearn.course.TestDataParsing
 import com.neolearn.course.TestingListener
-import com.neolearn.course.UserAnswer
-import com.neolearn.course.Variant
 import java.io.File
 import java.io.FileOutputStream
-import java.util.Optional
 
 
 fun Color.toHex(): String {
@@ -67,8 +67,13 @@ fun LessonDetailsScreen(
     modulePath: String,
     unitPath: String,
     lessonPath: String,
-    context: Context = LocalContext.current
+    onBack: () -> Unit,
+    context: Context = LocalContext.current,
 ) {
+    val webView = remember { WebView(context) }
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     var course by remember { mutableStateOf<Course?>(null) }
     var module by remember { mutableStateOf<Module?>(null) }
     var unit by remember { mutableStateOf<CourseUnit?>(null) }
@@ -80,6 +85,15 @@ fun LessonDetailsScreen(
 
     var showNextButton by remember { mutableStateOf(true) }
     val webViewState = remember { mutableStateOf<WebView?>(null) }
+
+    BackHandler {
+        webView.evaluateJavascript("handleBack()") { result ->
+            Log.e("WebView", "JS returned: $result")
+            if (result == "false") {
+                onBack()
+            }
+        }
+    }
 
     LaunchedEffect(coursePath) {
         try {
@@ -161,7 +175,7 @@ fun LessonDetailsScreen(
 
                         AndroidView(
                             factory = { context ->
-                                WebView(context).apply {
+                                webView.apply {
                                     val testingListener = TestingListener()
                                     testingListener.testData = TestDataParsing().getTestDataFromString(fullHtml)
 

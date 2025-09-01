@@ -97,7 +97,8 @@ fun AppNavigation() {
                     courseId!!,
                     moduleId!!,
                     unitId!!,
-                    lessonId!!
+                    lessonId!!,
+                    onBack = { navController.popBackStack() }
                 )
             }
         }

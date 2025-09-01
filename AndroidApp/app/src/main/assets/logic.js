@@ -20,6 +20,7 @@ const testSection = document.getElementById('test-section');
 const variants = document.querySelectorAll('.quiz-variant');
 const nextPartitionBtn = document.getElementById('next-partition');
 const prevPartitionBtn = document.getElementById('prev-partition');
+const checkTestQuestionBtn = document.getElementById('next-test-question');
 const testResultsSection = document.getElementById('test-results-section');
 const testResultsPointsLabel = document.getElementById('test-results-points');
 const testResultsFinishBtn = document.getElementById('test-results-finish-lesson');
@@ -28,8 +29,57 @@ const testResultsGoAgainBtn = document.getElementById('test-results-go-again-les
 let visiblePartition = 1;
 let partitionsCount = 1;
 
-let chosenVariantId = 0;
+let chosenVariantId = -1;
 let questionIndex = 1;
+
+let historyStack = [];
+historyStack.push("introduction");
+
+function hideEverything() {
+    introductionSection.style.display = "none";
+    lectureSection.style.display = "none";
+    testSection.style.display = 'none';
+    testResultsSection.style.display = 'none';
+}
+
+function goToPagePart(backTo) {
+    console.log("Backing to " + backTo);
+    hideEverything();
+    if (backTo == "introduction") {
+        introductionSection.style.display = "block";
+    }
+
+    if (backTo.startsWith("go to partition")) {
+        console.log("back: " + backTo);
+        const match = backTo.match(/\d+/);
+
+        if (match) {
+            const number = parseInt(match[0], 10);
+            console.log(number);
+            goToPartition(number)
+        }
+    }
+
+    if (backTo.startsWith("go to test")) {
+        console.log("back: " + backTo);
+        goToTestFn();
+    }
+
+    AndroidBridge.showPageFromStart();
+}
+
+function handleBack() {
+    console.log("HistoryStack length is: " + historyStack.length);
+    if (historyStack.length > 1) {
+        historyStack.pop();
+        var fromStack = historyStack.at(-1)
+        console.log("What is the latest in stack: " + fromStack);
+        goToPagePart(fromStack);
+        return true;
+    } else {
+        return false;
+    }
+}
 
 function goToPartition(number) {
     console.log('goToPartition(' + number + '). Current part number is ' + visiblePartition);
@@ -40,6 +90,7 @@ function goToPartition(number) {
         }
         document.querySelector(`#part` + i).style.display = (i === number ? "block" : "none");
         partitionsCount = i;
+        lectureSection.style.display = "block";
         AndroidBridge.showPageFromStart();
     }
 
@@ -56,34 +107,6 @@ function goToPartition(number) {
     visiblePartition = number;
     goToTestBtn.style.display = (number != partitionsCount ? 'none' : 'block');
 };
-
-if (nextPartitionBtn != null) {
-    nextPartitionBtn.addEventListener('click', () => {
-        console.log('goToNextPartition(). Current part number is ' + visiblePartition);
-        goToPartition(visiblePartition + 1);
-    });
-}
-
-if (prevPartitionBtn != null) {
-    prevPartitionBtn.addEventListener('click', () => {
-        console.log('goToPreviousPartition(). Current part number is ' + visiblePartition);
-        goToPartition(visiblePartition - 1);
-    });
-}
-
-function goToLectureFn() {
-  console.log('goToLectureBtn click received...');
-
-  introductionSection.style.display = 'none';
-  lectureSection.style.display = 'block';
-  testSection.style.display = 'none';
-
-  console.log('Scrolling to page start');
-  AndroidBridge.showPageFromStart();
-  console.log('Scrolled to page start');
-
-  goToPartition(1);
-}
 
 function makeTestInTestVariantVisible(questionNumber) {
   console.log('Variants count is ' + variants.length);
@@ -104,28 +127,62 @@ function makeTestInTestVariantVisible(questionNumber) {
   }
 }
 
-goToLectureBtn.addEventListener('click', goToLectureFn);
+function goToLectureFn() {
+  testResultsSection.style.display = 'none';
 
-// При натисканні кнопки Закінчення лекції – показати випадковий варіант тесту
-goToTestBtn.addEventListener('click', () => {
-  console.log('goToTestBtn click received...');
-  lectureSection.style.display = 'none';
-  testSection.style.display = 'block';
+  introductionSection.style.display = 'none';
+  lectureSection.style.display = 'block';
+  testSection.style.display = 'none';
 
-  const variantIndex = Math.floor(Math.random() * variants.length);
-  chosenVariantId = "variant" + (variantIndex + 1);
-  TestingListener.testVariantWasChoose(chosenVariantId);
-  console.log('Test variant chosen = ', chosenVariantId);
-
-  questionIndex = 1;
-  makeTestInTestVariantVisible(questionIndex);
-
+  console.log('goToLectureBtn click received...');
   console.log('Scrolling to page start');
   AndroidBridge.showPageFromStart();
-});
+  console.log('Scrolled to page start');
 
-// Перевірка результатів
-document.getElementById('check-test-question').addEventListener('click', () => {
+  historyStack.push("go to partition " + 1);
+  goToPartition(1);
+}
+
+function goToTestFn() {
+    console.log('goToTestBtn click received...');
+
+    hideEverything();
+    testSection.style.display = 'block';
+
+    if (chosenVariantId < 0) {
+        // variant is not choosed yet.
+        chosenVariantId = "variant" + (Math.floor(Math.random() * variants.length) + 1);
+    }
+    TestingListener.testVariantWasChoose(chosenVariantId);
+    console.log('Test variant chosen = ', chosenVariantId);
+
+    questionIndex = 1;
+    makeTestInTestVariantVisible(questionIndex);
+
+    console.log('Scrolling to page start');
+    AndroidBridge.showPageFromStart();
+}
+
+function goToTestResults() {
+  console.log('goToTestResultsBtn click received...');
+  testSection.style.display = 'none';
+  testResultsSection.style.display = 'block';
+
+  const testingResults = JSON.parse(TestingListener.getTestResult());
+  console.log('test results: ' + testingResults);
+
+  testResultsPointsLabel.innerText = testingResults.collectedPoints + "/" + testingResults.totalPoints;
+  if (testingResults.collectedPoints >= testingResults.totalPoints * 0.9) {
+    testResultsFinishBtn.style.display = 'block';
+    testResultsGoAgainBtn.style.display = 'none';
+  }
+  else {
+    testResultsFinishBtn.style.display = 'none';
+    testResultsGoAgainBtn.style.display = 'block';
+  }
+}
+
+function checkTestAnswersFn() {
   const activeVariant = document.querySelector(`.quiz-variant#${chosenVariantId}`);
   const questions = activeVariant.querySelectorAll('[data-question-id]');
 
@@ -164,28 +221,29 @@ document.getElementById('check-test-question').addEventListener('click', () => {
   } else {
     goToTestResults()
   }
-});
-
-function goToTestResults() {
-  console.log('goToTestResultsBtn click received...');
-  testSection.style.display = 'none';
-  testResultsSection.style.display = 'block';
-
-  const testingResults = JSON.parse(TestingListener.getTestResult());
-  console.log('test results: ' + testingResults);
-
-  testResultsPointsLabel.innerText = testingResults.collectedPoints + "/" + testingResults.totalPoints;
-  if (testingResults.collectedPoints >= testingResults.totalPoints * 0.9) {
-    testResultsFinishBtn.style.display = 'block';
-    testResultsGoAgainBtn.style.display = 'none';
-  }
-  else {
-    testResultsFinishBtn.style.display = 'none';
-    testResultsGoAgainBtn.style.display = 'block';
-  }
 }
 
-testResultsGoAgainBtn.addEventListener('click', () => {
-    testResultsSection.style.display = 'none';
-    goToLectureFn();
-});
+if (nextPartitionBtn != null) {
+    nextPartitionBtn.addEventListener('click', () => {
+        console.log('goToNextPartition(). Current part number is ' + visiblePartition);
+        historyStack.push("go to partition " + (visiblePartition + 1));
+        goToPartition(visiblePartition + 1);
+    });
+}
+
+if (prevPartitionBtn != null) {
+    prevPartitionBtn.addEventListener('click', () => {
+        console.log('goToPreviousPartition(). Current part number is ' + visiblePartition);
+        historyStack.push("go to partition " + (visiblePartition + 1));
+        goToPartition(visiblePartition - 1);
+    });
+}
+
+testResultsGoAgainBtn.addEventListener('click', goToLectureFn);
+goToLectureBtn.addEventListener('click', goToLectureFn);
+goToTestBtn.addEventListener('click', () => {
+    console.log("Adding to historyStack the next option: go to test.")
+    historyStack.push("go to test");
+    goToTestFn();
+})
+checkTestQuestionBtn.addEventListener('click', checkTestAnswersFn)
