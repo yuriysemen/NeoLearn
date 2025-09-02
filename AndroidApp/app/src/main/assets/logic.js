@@ -12,6 +12,7 @@ if (window.AndroidBridge) {
   alert(`Trying to hide next button failed.`);
 }
 
+const validationMessage = document.getElementById("validation-message");
 const introductionSection = document.getElementById('introduction');
 const goToLectureBtn = document.getElementById('go-to-lecture');
 const goToTestBtn = document.getElementById('go-to-test');
@@ -34,6 +35,19 @@ let questionIndex = 1;
 
 let historyStack = [];
 historyStack.push("introduction");
+
+function showValidationIssue(message) {
+    if (validationMessage != null) {
+        validationMessage.style.display = "block";
+        validationMessage.innerText = message;
+    }
+}
+
+function hideValidationIssue(message) {
+    if (validationMessage != null) {
+        validationMessage.style.display = "none";
+    }
+}
 
 function hideEverything() {
     introductionSection.style.display = "none";
@@ -155,6 +169,7 @@ function cleanAllChooses(variantId) {
             .forEach(input => {
                 console.log('Renew choosed state: ' + input.name);
                 input.checked = false;
+                input.disabled = false;
             });
     }
 }
@@ -214,7 +229,16 @@ function checkTestAnswersFn() {
   } else if (type === 'checkbox') {
       const selected = question.querySelectorAll('input[type="checkbox"]:checked');
       answeredValue = Array.from(selected).map(cb => cb.value);
+
   }
+
+  if (!answeredValue.length) {
+    showValidationIssue("Please choose answer");
+    return;
+  }
+  hideValidationIssue("Please choose answer");
+
+  question.querySelectorAll('input[type="radio"], input[type=checkbox]').forEach(el => el.disabled = true);
 
   const result = {
       variantId: chosenVariantId,
