@@ -9,10 +9,6 @@ class TestingListener {
     val gson = Gson()
     var testData: List<Variant> = listOf()
     var testVariant: Variant? = null
-    var nextTaskToBeChecked: Int = 0
-
-    var totalPoints: Int = 0
-    var collectedPoints: Int = 0
 
     @JavascriptInterface
     fun testVariantWasChoose(chosenVariant: String): String {
@@ -20,12 +16,9 @@ class TestingListener {
         for (variant in testData) {
             if (variant.variantId == chosenVariant) {
                 testVariant = variant
-                nextTaskToBeChecked = 0
 
-                collectedPoints = 0
-                totalPoints = 0
                 for (questions in variant.questions) {
-                    totalPoints = totalPoints + questions.points
+                    questions.achievedPoints = 0
                 }
 
                 return "Ok"
@@ -48,6 +41,7 @@ class TestingListener {
                 return "Unexpected index of variant: " + answer.variantId + ". Should be " + testVariant?.variantId
             }
 
+            var nextTaskToBeChecked = Integer.parseInt(answer.questionId.substring(answer.variantId.length + 1).substringBefore("_")) - 1
             if (testVariant?.questions[nextTaskToBeChecked]?.questionId != answer.questionId) {
                 Log.e(this.javaClass.name, "Unexpected question id")
                 return "Unexpected question id"
@@ -58,6 +52,7 @@ class TestingListener {
                 for (option in testVariant?.questions[nextTaskToBeChecked]?.options!!) {
                     if (option.value == answer.answer[0] && option.dataCorrect) {
                         points = testVariant?.questions[nextTaskToBeChecked]?.points!!
+                        testVariant?.questions[nextTaskToBeChecked]?.achievedPoints = points
                         break
                     }
                 }
@@ -81,16 +76,14 @@ class TestingListener {
                         }
                     }
                     if (count == correctOptions) {
-                        points = testVariant?.questions[nextTaskToBeChecked]?.points!!;
+                        points = testVariant?.questions[nextTaskToBeChecked]?.points!!
+                        testVariant?.questions[nextTaskToBeChecked]?.achievedPoints = points
                     }
                 }
             }
             else {
                 return "Unexpected type of the question"
             }
-
-            nextTaskToBeChecked++
-            collectedPoints = collectedPoints + points
 
             """{
               |   "userAnswer": ${points}
@@ -107,6 +100,14 @@ class TestingListener {
     @JavascriptInterface
     fun getTestResult(): String {
         Log.i(this.javaClass.name, "Getting test results.")
+
+        var collectedPoints = 0
+        var totalPoints = 0
+        for (questions in testVariant?.questions!!) {
+            collectedPoints += questions.achievedPoints
+            totalPoints += questions.points
+        }
+
         return """{
               |   "variant": "${testVariant?.variantId}",
               |   "collectedPoints": ${collectedPoints},

@@ -43,26 +43,30 @@ function hideEverything() {
 }
 
 function goToPagePart(backTo) {
-    console.log("Backing to " + backTo);
+    console.log("goToPagePart to " + backTo);
     hideEverything();
     if (backTo == "introduction") {
         introductionSection.style.display = "block";
     }
 
     if (backTo.startsWith("go to partition")) {
-        console.log("back: " + backTo);
         const match = backTo.match(/\d+/);
 
         if (match) {
             const number = parseInt(match[0], 10);
-            console.log(number);
+            console.log("Go to partition from history " + number);
             goToLearnPartition(number)
         }
     }
 
-    if (backTo.startsWith("go to test")) {
-        console.log("back: " + backTo);
-        goToTestFn();
+    if (backTo.startsWith("go to test part ")) {
+        const match = backTo.match(/\d+/);
+
+        if (match) {
+            const number = parseInt(match[0], 10);
+            console.log("Go to test (from history) number " + number);
+            goToTestFn(false, number)
+        }
     }
 
     AndroidBridge.showPageFromStart();
@@ -108,11 +112,12 @@ function goToLearnPartition(number) {
     goToTestBtn.style.display = (number != partitionsCount ? 'none' : 'block');
 };
 
-function makeTestInTestVariantVisible(questionNumber) {
+function makeTestInTestVariantVisible(questionNumber, fillHistory = true) {
   console.log('Variants count is ' + variants.length);
   for (var i = 0; i < variants.length; i++) {
     if (variants[i].id === chosenVariantId) {
       variants[i].style.display = 'block';
+      if (fillHistory) historyStack.push("go to test part " + questionNumber);
 
       var questions = variants[i].querySelectorAll('.question');
       console.log('Questions count is ' + questions.length);
@@ -154,7 +159,7 @@ function cleanAllChooses(variantId) {
     }
 }
 
-function goToTestFn() {
+function goToTestFn(fillHistory = true, testNumber = 1) {
     console.log('goToTestBtn click received...');
 
     hideEverything();
@@ -163,12 +168,12 @@ function goToTestFn() {
     if (chosenVariantId < 0) {
         chosenVariantId = "variant" + (Math.floor(Math.random() * variants.length) + 1);
         cleanAllChooses(chosenVariantId);
+        TestingListener.testVariantWasChoose(chosenVariantId);
+        console.log('Test variant chosen = ', chosenVariantId);
     }
-    TestingListener.testVariantWasChoose(chosenVariantId);
-    console.log('Test variant chosen = ', chosenVariantId);
 
-    questionIndex = 1;
-    makeTestInTestVariantVisible(questionIndex);
+    makeTestInTestVariantVisible(testNumber, fillHistory);
+    questionIndex = testNumber;
 
     console.log('Scrolling to page start');
     AndroidBridge.showPageFromStart();
@@ -258,10 +263,6 @@ testResultsGoAgainBtn.addEventListener('click', () => {
 })
 
 goToLectureBtn.addEventListener('click', goToLectureFn);
-goToTestBtn.addEventListener('click', () => {
-    console.log("Adding to historyStack the next option: go to test.")
-    historyStack.push("go to test");
-    goToTestFn();
-})
+goToTestBtn.addEventListener('click', goToTestFn);
 
 checkTestQuestionBtn.addEventListener('click', checkTestAnswersFn)

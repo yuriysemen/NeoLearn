@@ -15,7 +15,8 @@ data class Question(
     val type: String,
     val text: String,
     val options: List<Option>,
-    val points: Int
+    val points: Int,
+    var achievedPoints: Int = 0
 )
 
 data class UserAnswer(
