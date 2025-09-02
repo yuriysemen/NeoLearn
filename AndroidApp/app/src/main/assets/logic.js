@@ -56,7 +56,7 @@ function goToPagePart(backTo) {
         if (match) {
             const number = parseInt(match[0], 10);
             console.log(number);
-            goToPartition(number)
+            goToLearnPartition(number)
         }
     }
 
@@ -81,8 +81,8 @@ function handleBack() {
     }
 }
 
-function goToPartition(number) {
-    console.log('goToPartition(' + number + '). Current part number is ' + visiblePartition);
+function goToLearnPartition(number) {
+    console.log('goToLearnPartition(' + number + '). Current part number is ' + visiblePartition);
 
     for (var i = 1; i < 100000; i++) {
         if (document.querySelector(`#part` + i) == null) {
@@ -140,7 +140,7 @@ function goToLectureFn() {
   console.log('Scrolled to page start');
 
   historyStack.push("go to partition " + 1);
-  goToPartition(1);
+  goToLearnPartition(1);
 }
 
 function cleanAllChooses(variantId) {
@@ -239,7 +239,7 @@ if (nextPartitionBtn != null) {
     nextPartitionBtn.addEventListener('click', () => {
         console.log('goToNextPartition(). Current part number is ' + visiblePartition);
         historyStack.push("go to partition " + (visiblePartition + 1));
-        goToPartition(visiblePartition + 1);
+        goToLearnPartition(visiblePartition + 1);
     });
 }
 
@@ -247,7 +247,7 @@ if (prevPartitionBtn != null) {
     prevPartitionBtn.addEventListener('click', () => {
         console.log('goToPreviousPartition(). Current part number is ' + visiblePartition);
         historyStack.push("go to partition " + (visiblePartition + 1));
-        goToPartition(visiblePartition - 1);
+        goToLearnPartition(visiblePartition - 1);
     });
 }
 
