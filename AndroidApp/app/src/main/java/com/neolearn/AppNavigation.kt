@@ -98,6 +98,7 @@ fun AppNavigation() {
                     moduleId!!,
                     unitId!!,
                     lessonId!!,
+                    onComplete = { navController.popBackStack() },
                     onBack = { navController.popBackStack() }
                 )
             }

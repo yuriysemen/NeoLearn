@@ -290,3 +290,8 @@ goToLectureBtn.addEventListener('click', goToLectureFn);
 goToTestBtn.addEventListener('click', goToTestFn);
 
 checkTestQuestionBtn.addEventListener('click', checkTestAnswersFn)
+
+testResultsFinishBtn.addEventListener('click', () => {
+    console.log("Finish lesson.");
+    AndroidBridge.completeLesson();
+})

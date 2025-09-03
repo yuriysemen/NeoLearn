@@ -5,15 +5,15 @@ import android.app.Activity
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.webkit.JavascriptInterface
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -62,12 +62,13 @@ fun copyAssetToCache(context: Context, assetName: String, outputName: String): F
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LessonDetailsScreen(
+fun LessonDetailsScreen (
     coursePath: String,
     modulePath: String,
     unitPath: String,
     lessonPath: String,
     onBack: () -> Unit,
+    onComplete: () -> Boolean,
     context: Context = LocalContext.current,
 ) {
     val webView = remember { WebView(context) }
@@ -154,7 +155,7 @@ fun LessonDetailsScreen(
 
                     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
 
-                        class WebAppBridge {
+                        class WebAppBridge() {
                             @JavascriptInterface
                             fun showNextBtn(showBtn: Boolean) {
                                 showNextButton = showBtn;
@@ -169,6 +170,14 @@ fun LessonDetailsScreen(
                                         "window.scrollTo(0, 0);",
                                         null
                                     )
+                                }
+                            }
+
+                            @JavascriptInterface
+                            fun completeLesson() {
+                                Log.i(this.javaClass.name, "showPageFromStart()")
+                                Handler(Looper.getMainLooper()).post {
+                                    onComplete()
                                 }
                             }
                         }
