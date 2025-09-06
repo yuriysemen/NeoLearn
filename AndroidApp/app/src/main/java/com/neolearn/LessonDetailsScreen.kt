@@ -5,10 +5,7 @@ import android.app.Activity
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.webkit.JavascriptInterface
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
@@ -23,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,6 +31,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.neolearn.course.CourseListener
 import com.neolearn.course.TestDataParsing
 import com.neolearn.course.TestingListener
 import java.io.File
@@ -72,8 +69,6 @@ fun LessonDetailsScreen (
     context: Context = LocalContext.current,
 ) {
     val webView = remember { WebView(context) }
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    val lifecycleOwner = LocalLifecycleOwner.current
 
     var course by remember { mutableStateOf<Course?>(null) }
     var module by remember { mutableStateOf<Module?>(null) }
@@ -83,9 +78,6 @@ fun LessonDetailsScreen (
 
     var dataLoaded by remember { mutableStateOf(false) }
     var loadingCourseError by remember { mutableStateOf(false) }
-
-    var showNextButton by remember { mutableStateOf(true) }
-    val webViewState = remember { mutableStateOf<WebView?>(null) }
 
     BackHandler {
         webView.evaluateJavascript("handleBack()") { result ->
@@ -154,38 +146,15 @@ fun LessonDetailsScreen (
                     val (fullHtml, baseUrl) = prepareActivity(context, activityPath);
 
                     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
-
-                        class WebAppBridge() {
-                            @JavascriptInterface
-                            fun showNextBtn(showBtn: Boolean) {
-                                showNextButton = showBtn;
-                                Log.i(this.javaClass.name, "showNextBtn($showBtn)")
-                            }
-
-                            @JavascriptInterface
-                            fun showPageFromStart() {
-                                Log.i(this.javaClass.name, "showPageFromStart()")
-                                (context as Activity).runOnUiThread {
-                                    webViewState.value?.evaluateJavascript(
-                                        "window.scrollTo(0, 0);",
-                                        null
-                                    )
-                                }
-                            }
-
-                            @JavascriptInterface
-                            fun completeLesson() {
-                                Log.i(this.javaClass.name, "showPageFromStart()")
-                                Handler(Looper.getMainLooper()).post {
-                                    onComplete()
-                                }
-                            }
-                        }
-
                         AndroidView(
                             factory = { context ->
                                 webView.apply {
                                     val testingListener = TestingListener()
+                                    val courseListener = CourseListener(
+                                        context as Activity,
+                                        webView,
+                                        onComplete
+                                    )
                                     testingListener.testData = TestDataParsing().getTestDataFromString(fullHtml)
 
                                     settings.javaScriptEnabled = true
@@ -196,7 +165,7 @@ fun LessonDetailsScreen (
                                     settings.builtInZoomControls = false
                                     settings.displayZoomControls = false
                                     webViewClient = WebViewClient()
-                                    addJavascriptInterface(WebAppBridge(), "AndroidBridge")
+                                    addJavascriptInterface(courseListener, "CourseListener")
                                     addJavascriptInterface(testingListener, "TestingListener")
                                     loadDataWithBaseURL(
                                         baseUrl,
@@ -205,7 +174,6 @@ fun LessonDetailsScreen (
                                         "utf-8",
                                         null
                                     )
-                                    webViewState.value = this
                                 }
                             },
                             update = { webView ->
@@ -220,22 +188,6 @@ fun LessonDetailsScreen (
                                 .fillMaxSize()
                                 .pointerInteropFilter { false }
                         )
-                    }
-                }
-
-                if (activityNumber <= lesson!!.activities.size) {
-                    Button(
-                        onClick = {
-                            if (activityNumber != lesson!!.activities.size)
-                                activityNumber += 1
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp)
-                            .alpha(if (showNextButton) 1f else 0f),
-                        shape = MaterialTheme.shapes.medium
-                    ) {
-                        Text(text = "Наступний крок")
                     }
                 }
             }

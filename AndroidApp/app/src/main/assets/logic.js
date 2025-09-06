@@ -1,12 +1,7 @@
-if (window.AndroidBridge) {
-  // Hide button next
-  console.log('Hiding original next button');
-  AndroidBridge.showNextBtn(false);
-  console.log('Hided original next button');
-
+if (window.CourseListener) {
   // Going to start of the page
   console.log('Scrolling to page start');
-  AndroidBridge.showPageFromStart();
+  CourseListener.showPageFromStart();
   console.log('Scrolled to page start');
 } else {
   alert(`Trying to hide next button failed.`);
@@ -83,7 +78,7 @@ function goToPagePart(backTo) {
         }
     }
 
-    AndroidBridge.showPageFromStart();
+    CourseListener.showPageFromStart();
 }
 
 function handleBack() {
@@ -109,7 +104,7 @@ function goToLearnPartition(number) {
         document.querySelector(`#part` + i).style.display = (i === number ? "block" : "none");
         partitionsCount = i;
         lectureSection.style.display = "block";
-        AndroidBridge.showPageFromStart();
+        CourseListener.showPageFromStart();
     }
 
     console.log('Partitions count is ' + partitionsCount);
@@ -155,7 +150,7 @@ function goToLectureFn() {
 
   console.log('goToLectureBtn click received...');
   console.log('Scrolling to page start');
-  AndroidBridge.showPageFromStart();
+  CourseListener.showPageFromStart();
   console.log('Scrolled to page start');
 
   historyStack.push("go to partition " + 1);
@@ -191,7 +186,7 @@ function goToTestFn(fillHistory = true, testNumber = 1) {
     questionIndex = testNumber;
 
     console.log('Scrolling to page start');
-    AndroidBridge.showPageFromStart();
+    CourseListener.showPageFromStart();
 }
 
 function goToTestResults() {
@@ -246,7 +241,7 @@ function checkTestAnswersFn() {
       answer: answeredValue
   };
 
-  if (window.AndroidBridge) {
+  if (window.CourseListener) {
       console.log('sendMaterialTestData("' + JSON.stringify(result) + '");');
       resultOfSendingData = TestingListener.sendMaterialTestData(JSON.stringify(result));
       console.log('sent MaterialTestData()' + resultOfSendingData);
@@ -293,5 +288,5 @@ checkTestQuestionBtn.addEventListener('click', checkTestAnswersFn)
 
 testResultsFinishBtn.addEventListener('click', () => {
     console.log("Finish lesson.");
-    AndroidBridge.completeLesson();
+    CourseListener.completeLesson();
 })
