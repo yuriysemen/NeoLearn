@@ -7,7 +7,6 @@ import android.webkit.WebViewClient
 import android.content.Context
 import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -30,7 +29,6 @@ import com.neolearn.course.Lesson
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.neolearn.course.CourseListener
 import com.neolearn.course.TestDataParsing
 import com.neolearn.course.TestingListener

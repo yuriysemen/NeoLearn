@@ -11,6 +11,8 @@ import com.neolearn.course.Module
 import com.neolearn.course.CourseUnit
 import com.neolearn.course.Lesson
 import com.neolearn.toHex
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
 
 object CourseLoader {
     private val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
@@ -132,16 +134,76 @@ object CourseLoader {
 
     @Composable
     fun prepareActivity(context: Context, activityPath: String): Pair<String, String> {
-        val header = readAsset(context, "header.html")
-        val footer = readAsset(context, "footer.html")
-        val body = readAsset(context, activityPath)
+        var header = readAsset(context, "header.html")
+        var footer = readAsset(context, "footer.html")
+        var body = readAsset(context, activityPath)
 
         copyAssetToCache(context, "katex/katex.min.css", "katex.min.css")
         copyAssetToCache(context, "logic.js", "logic.js")
         copyAssetToCache(context, "katex/katex.min.js", "katex.min.js")
         copyAssetToCache(context, "katex/auto-render.min.js", "auto-render.min.js")
 
-        val header2 = header.replace("{{background}}", MaterialTheme.colorScheme.primaryContainer.toHex())
+        body = prepareQuestions(body)
+
+        header = prepareColorSchema(header)
+        footer = prepareColorSchema(footer)
+        body = prepareColorSchema(body)
+
+        return Pair(header + body + footer, context.cacheDir.toURI().toString())
+    }
+
+    fun prepareQuestions(body: String): String {
+        val doc = Jsoup.parse(body)
+
+        val shortDivs = doc.select("div[representation=short]")
+
+        for (div in shortDivs) {
+            val questionId = div.attr("data-question-id")
+            val questionText = div.selectFirst("q")?.text() ?: "Запитання"
+            val answers = div.select("li")
+
+            val newDiv = Element("div")
+                .attr("data-question-id", questionId)
+                .attr("data-type", div.attr("data-type"))
+                .addClass("question")
+            val type = div.attr("data-type")
+
+
+            newDiv.appendText(questionText)
+            newDiv.appendElement("br")
+
+            val name = questionId.removeSuffix("_group")
+
+            // генеруємо варіанти відповідей
+            for (answer in answers) {
+                val value = answer.text()
+                val label = Element("label")
+                val input = Element("input")
+                    .attr("type", type)
+                    .attr("name", name)
+                    .attr("value", value)
+
+                // переносимо data-correct якщо є
+                if (answer.hasAttr("data-correct")) {
+                    input.attr("data-correct", "true")
+                }
+
+                label.appendChild(input)
+                label.appendText(" $value")
+                newDiv.appendChild(label)
+                newDiv.appendElement("br")
+            }
+
+            // замінюємо оригінальний div новим
+            div.replaceWith(newDiv)
+        }
+
+        return doc.body().html()
+    }
+
+    @Composable
+    private fun prepareColorSchema(content: String): String =
+        content.replace("{{background}}", MaterialTheme.colorScheme.primaryContainer.toHex())
             .replace("{{text}}", MaterialTheme.colorScheme.onPrimaryContainer.toHex())
             .replace("{{math}}", MaterialTheme.colorScheme.secondary.toHex())
             .replace("{{infoBackground}}", "rgba(255,255,255,0.1)")
@@ -153,8 +215,5 @@ object CourseLoader {
             .replace("{{reference}}", "#26c6da")
             .replace("{{hint}}", "#aed581")
             .replace("{{term}}", "#f06292")
-
-        return Pair(header2 + body + footer, context.cacheDir.toURI().toString())
-    }
 
 }
